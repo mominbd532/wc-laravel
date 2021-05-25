@@ -15,8 +15,10 @@
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
 
 // sweet alert
-@import 'sweetalert2/src/sweetalert2.scss';
+@import '~sweetalert2/src/sweetalert2.scss';
 // import 'sweetalert2/src/sweetalert2.scss'
+
+@import "~vue-select/src/scss/vue-select.scss";
 
 .navbar-laravel {
   background-color: #fff;

@@ -32,6 +32,9 @@
         "sweetalert2": "^9.17.2",
         "vform": "^1.0.1",
         "vue-progressbar": "^0.7.5",
-        "vue-router": "^3.4.9"
+        "vue-router": "^3.4.9",
+        "vue-select": "^3.11.2",
+        "vue-select2": "^0.2.6",
+        "vuejs-datetimepicker": "^1.1.13"
     }
 }
