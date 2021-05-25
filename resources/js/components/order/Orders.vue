@@ -58,33 +58,33 @@
                                     <td>{{diniDateTime(order.created_at)}}</td>
                                     <td>{{diniDateTime(order.order_date)}}</td>
                                     <td>
-                                        <datetime :value="diniDate(order.shipping_date)" name="shipping_date" format="DD/MM/YYYY" class="form-control" :class="{ 'is-invalid': form.errors.has('shipping_date') }" width="225px" ></datetime>
+                                        <datetime :value="diniDate(order.shipping_date)" name="shipping_date" format="DD/MM/YYYY" class="form-control" :class="{ 'is-invalid': form.errors.has('shipping_date') }" width="225px" :readonly="order.status == 'pre-cancel'" ></datetime>
                                         <has-error :form="form" field="shipping_date" ></has-error>
                                     </td>
                                     <td>{{order.created_way}}</td>
                                     <td>{{order.invoice_number}}</td>
                                     <td>
                                         <input :value="order.name" type="text" name="name"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('name') }" style="width: fit-content;" @change="updateOrder($event, order.id)">
+                                               class="form-control" :class="{ 'is-invalid': form.errors.has('name') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
                                         <has-error :form="form" field="name" ></has-error>
                                     </td>
                                     <td>
                                         <input :value="order.address" type="text" name="address"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('address') }" style="width: fit-content;" @change="updateOrder($event, order.id)">
+                                               class="form-control" :class="{ 'is-invalid': form.errors.has('address') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
                                         <has-error :form="form" field="address" ></has-error>
                                     </td>
                                     <td>{{order.district_code}}</td>
                                     <td>
                                         <input :value="order.phone" type="text" name="phone"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('phone') }" style="width: fit-content;" @change="updateOrder($event, order.id)">
+                                               class="form-control" :class="{ 'is-invalid': form.errors.has('phone') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
                                         <has-error :form="form" field="phone" ></has-error>
 
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-primary" @click="newModal1(order.id)">Show Products</button>
+                                        <button type="button" class="btn btn-primary" @click="newModal1(order.id)">Products</button>
                                     </td>
                                     <td>
-                                        <select class="form-control" name="payment_method" @change="updateOrder($event, order.id)" style="width: fit-content;">
+                                        <select class="form-control" name="payment_method" @change="updateOrder($event, order.id)" style="width: fit-content;" :disabled="order.status == 'pre-cancel'">
                                             <option
                                                     v-for="(payment,index) in paymentMethods" :key="index"
                                                     :value="payment.method" :selected="order.payment_method == payment.method">{{payment.pay_name}}</option>
@@ -93,32 +93,32 @@
                                     </td>
                                     <td>
                                         <input :value="order.txn_num" type="text" name="txn_num"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('txn_num') }" style="width: fit-content;" @change="updateOrder($event, order.id)">
+                                               class="form-control" :class="{ 'is-invalid': form.errors.has('txn_num') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
                                         <has-error :form="form" field="txn_num" ></has-error>
                                     </td>
                                     <td>
                                         <input :value="order.txn_id" type="text" name="txn_id"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('txn_id') }" style="width: fit-content;" @change="updateOrder($event, order.id)">
+                                               class="form-control" :class="{ 'is-invalid': form.errors.has('txn_id') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
                                         <has-error :form="form" field="txn_id" ></has-error>
                                     </td>
                                     <td>
                                         <input :value="order.coupon" type="text" name="coupon"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('coupon') }" style="width: fit-content;" @change="updateOrder($event, order.id)">
+                                               class="form-control" :class="{ 'is-invalid': form.errors.has('coupon') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
                                         <has-error :form="form" field="coupon" ></has-error>
                                     </td>
                                     <td>{{subTotalList(order.order_details)}} TK</td>
                                     <td>
                                         <input :value="order.discount" type="number" name="discount"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('discount') }" style="width: fit-content;" @change="updateOrder($event, order.id)">
+                                               class="form-control" :class="{ 'is-invalid': form.errors.has('discount') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
                                         <has-error :form="form" field="discount" ></has-error>
                                     </td>
                                     <td>
                                         <input :value="order.discount_percent" type="number" name="discount_percent"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('discount_percent') }" style="width: fit-content;" @change="updateOrder($event, order.id)">
+                                               class="form-control" :class="{ 'is-invalid': form.errors.has('discount_percent') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
                                         <has-error :form="form" field="discount_percent" ></has-error>
                                     </td>
                                     <td>
-                                        <select class="form-control" name="shipping_title" @change="updateOrder($event, order.id)" style="width: fit-content;">
+                                        <select class="form-control" name="shipping_title" @change="updateOrder($event, order.id)" style="width: fit-content;" :disabled="order.status == 'pre-cancel'">
                                             <option
                                                     v-for="(ship,index) in shippings" :key="index"
                                                     :value="ship.ship_title" :selected="order.shipping_title == ship.ship_title">{{ship.ship_title}}</option>
@@ -127,20 +127,23 @@
                                     </td>
                                     <td>
                                         <input :value="order.shipping_cost" type="number" name="shipping_cost"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('shipping_cost') }" style="width: fit-content;" @change="updateOrder($event, order.id)">
+                                               class="form-control" :class="{ 'is-invalid': form.errors.has('shipping_cost') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
                                         <has-error :form="form" field="shipping_cost" ></has-error>
                                     </td>
 
                                     <td>{{grandTotalList(order)}} TK</td>
                                     <td>
-                                        <button v-if="order.status == 'new'" type="button" class="btn btn-primary" @click="postOrder(order.id)">Create Order</button>
+                                        <button v-if="order.status == 'new'" type="button" class="btn btn-primary" @click="postOrder(order.id)">Confirm</button>
+                                        <button v-if="order.status == 'new'" type="button" class="btn btn-danger" @click="preCancelOrder(order.id)">Pre-Cancel</button>
+                                        <p v-else-if="order.status == 'pre-cancel'" style="color: red;">Pre-Cancelled</p>
+                                        <v-select v-else label="name" :options="orderStatuses"></v-select>
                                     </td>
                                     <td>
                                         <input :value="order.note" type="text" name="note"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('note') }" style="width: fit-content;" @change="updateOrder($event, order.id)">
+                                               class="form-control" :class="{ 'is-invalid': form.errors.has('note') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
                                         <has-error :form="form" field="note" ></has-error>
                                     </td>
-                                    <td>Print</td>
+                                    <td><a :href="'https://dini.com.bd/wp-admin/admin-ajax.php?action=generate_wpo_wcpdf&document_type=invoice&order_ids='+order.order_id+'&_wpnonce=878adeafb9'" target="_blank" class="btn btn-info" :style="[order.order_id ? {}:{'pointer-events': 'none'}]" >Print</a></td>
                                     <td>{{order.print_count}}</td>
                                     <td>{{order.user}}</td>
 
@@ -220,7 +223,7 @@
                                                             <has-error :form="form" field="quantity"></has-error>
                                                         </div>
                                                         <div class="col-2">
-                                                            <button type="button" class="btn btn-success mt-4" @click="addProductEdit(order.id)">
+                                                            <button type="button" class="btn btn-success mt-4" @click="addProductEdit(order.id)" :disabled="order.status == 'pre-cancel'" >
                                                                 <i class="fas fa-plus"></i>
                                                             </button>
 
@@ -253,13 +256,13 @@
                                                                     </td>
                                                                     <td>
                                                                         <input :value="detail.quantity" type="number" name="quantity"
-                                                                               class="form-control" :class="{ 'is-invalid': form.errors.has('quantity') }" style="width: fit-content;" @change="updateOrderDetails($event, detail.id)">
+                                                                               class="form-control" :class="{ 'is-invalid': form.errors.has('quantity') }" style="width: fit-content;" @change="updateOrderDetails($event, detail.id)" :readonly="order.status == 'pre-cancel'">
                                                                         <has-error :form="form" field="quantity" ></has-error>
                                                                     </td>
                                                                     <td>
                                                                         {{detail.price * detail.quantity}}
                                                                     </td>
-                                                                    <td><button type="button" class="btn btn-danger" @click="deleteProduct(detail.id)">
+                                                                    <td><button type="button" class="btn btn-danger" @click="deleteProduct(detail.id)" :disabled="order.status == 'pre-cancel'" >
                                                                         <i class="fas fa-minus"></i>
                                                                     </button>
                                                                     </td>
@@ -551,6 +554,14 @@
     import vSelect from "vue-select";
     import _ from 'lodash';
     import datetime from 'vuejs-datetimepicker';
+    import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
+
+    const diniApi = new WooCommerceRestApi({
+        url: "https://dini.com.bd",
+        consumerKey: "ck_5ad6f72002ba15d858f1d1d1b720875989a94a19",
+        consumerSecret: "cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31",
+        version: "wc/v3"
+    });
 
 
     export default {
@@ -636,10 +647,12 @@
                         {
                             method_id: "",
                             method_title: "",
-                            total: 0
+                            total: "0"
                         }
                     ]
                 },
+
+                orderStatuses: [],
 
 
             }
@@ -734,6 +747,7 @@
 
                         if(data.statusText == 'OK'){
                             $('#addNew').modal('hide');
+                            console.log(data.data);
 
                             Toast.fire({
                                 icon: 'success',
@@ -1080,7 +1094,7 @@
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, create order!'
+                    confirmButtonText: 'Yes, confirm order!'
                 }).then((result) => {
                     this.$Progress.start();
 
@@ -1104,7 +1118,7 @@
                             getData.status = "processing";
                             getData.shipping_lines[0].method_id = value.shipping_title;
                             getData.shipping_lines[0].method_title = value.shipping_title;
-                            getData.shipping_lines[0].total = value.shipping_cost;
+                            getData.shipping_lines[0].total = value.shipping_cost.toString();
 
                             // console.log(value.discount);
                             // console.log(value.discount_percent);
@@ -1131,7 +1145,7 @@
                                 getData.line_items.push({
                                     product_id: value3.product_id,
                                     quantity: value3.quantity,
-                                    total: totalPrice
+                                    total: totalPrice.toString()
                                 });
                             });
 
@@ -1146,22 +1160,31 @@
                      this.postOrderData = getData;
 
                     // Post Order
-                    var postUrl = 'https://dini.com.bd/wp-json/wc/v3/orders?consumer_key=ck_5ad6f72002ba15d858f1d1d1b720875989a94a19&consumer_secret=cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31';
 
-                    axios.post(postUrl,this.postOrderData)
-                        .then((data)=>{
 
-                            if(data.id){
-                                var noteUrl = "https://dini.com.bd/wp-json/wc/v3/orders/"+data.id+"/notes?consumer_key=ck_5ad6f72002ba15d858f1d1d1b720875989a94a19&consumer_secret=cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31";
+                    diniApi.post("orders",this.postOrderData)
+                        .then((response)=>{
+
+                            // console.log("Response Status:", response.status);
+                            // console.log("Response Headers:", response.headers);
+                            // console.log("Response Data:", response.data);
+
+                            if(response.data.id){
+                                var noteUrl = "orders/"+response.data.id+"/notes";
                                // Add Order Create note
-                                axios.post(noteUrl,{
+                                diniApi.post(noteUrl,{
                                     note: "Order Created from local by"+user.name
                                 })
-                                    .then((data1)=>{
+                                    .then((response1)=>{
+                                        // console.log("Response Status:", response1.status);
+                                        // console.log("Response Headers:", response1.headers);
+                                        // console.log("Response Data:", response1.data);
 
-                                        if(data1.id){
+                                        if(response1.data.id){
                                             console.log("Note ok");
                                         } else {
+                                            this.refreshPostOrderData();
+                                            console.log("Add Order create note else Error");
                                             Toast.fire({
                                                 icon: 'error',
                                                 title: 'Some error occured! Please try again'
@@ -1170,7 +1193,13 @@
                                             this.$Progress.failed();
                                         }
                                     })
-                                    .catch(()=>{
+                                    .catch((error)=>{
+                                        this.refreshPostOrderData();
+                                        console.log("Add Order create note  Error");
+                                        // Invalid request, for 4xx and 5xx statuses
+                                        // console.log("Response Status:", error.response.status);
+                                        // console.log("Response Headers:", error.response.headers);
+                                        // console.log("Response Data:", error.response.data);
 
                                         Toast.fire({
                                             icon: 'error',
@@ -1178,34 +1207,49 @@
                                         });
                                     });
                                 // Update status processing to confirmed
-                                var updateUrl = "https://dini.com.bd/wp-json/wc/v3/orders/"+data.id+"?consumer_key=ck_5ad6f72002ba15d858f1d1d1b720875989a94a19&consumer_secret=cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31";
+                                var updateUrl = "orders/"+response.data.id;
 
-                                axios.put(updateUrl,{
+                                diniApi.put(updateUrl,{
                                     status: "confirmed"
                                 })
-                                    .then((data2)=>{
+                                    .then((response)=>{
 
-                                        if(data2.id){
+                                        // console.log("Response Status:", response.status);
+                                        // console.log("Response Headers:", response.headers);
+                                        // console.log("Response Data:", response.data);
+
+                                        if(response.data.id){
                                             // Update on local data base
-                                            let even = data2.meta_data.filter(meta => !meta.key.indexOf("_wcpdf_invoice_number"));
 
-                                            axios.put("api/order"+id,{
-                                                order_id: data2.id,
-                                                invoice_number: even.value,
-                                                status: data2.status
+                                            let even = "";
+                                            $.each(response.data.meta_data, function(key4, value4) {
 
-                                            })
-                                                .then((data3)=>{
+                                                if(value4.key == "_wcpdf_invoice_number" ){
+                                                    even =  value4.value;
+                                                }
 
-                                                    if(data3.statusText == 'OK'){
+
+                                            });
+
+                                            axios.put("api/order/"+id,{
+                                                order_id: response.data.id,
+                                                status: response.data.status,
+                                                invoice_number: parseInt(even)
+                                            }).then((data)=>{
+
+                                                    if(data.statusText == 'OK'){
                                                         Toast.fire({
                                                             icon: 'success',
                                                             title: data.data.message
                                                         });
+
+                                                        this.refreshPostOrderData();
                                                         this.$Progress.finish();
                                                         this.loadOrders();
 
                                                     } else {
+                                                        console.log("Update on local data base else Error");
+                                                        this.refreshPostOrderData();
                                                         Toast.fire({
                                                             icon: 'error',
                                                             title: 'Some error occured! Please try again'
@@ -1215,7 +1259,8 @@
                                                     }
                                                 })
                                                 .catch(()=>{
-
+                                                    console.log("Update on local data base Error");
+                                                    this.refreshPostOrderData();
                                                     Toast.fire({
                                                         icon: 'error',
                                                         title: 'Some error occured! Please try again'
@@ -1223,6 +1268,8 @@
                                                 });
 
                                         } else {
+                                            console.log("Update status processing to confirmed else Error");
+                                            this.refreshPostOrderData();
                                             Toast.fire({
                                                 icon: 'error',
                                                 title: 'Some error occured! Please try again'
@@ -1231,8 +1278,13 @@
                                             this.$Progress.failed();
                                         }
                                     })
-                                    .catch(()=>{
-
+                                    .catch((error)=>{
+                                        this.refreshPostOrderData();
+                                        console.log("Update status processing to confirmed Error");
+                                        // Invalid request, for 4xx and 5xx statuses
+                                        // console.log("Response Status:", error.response.status);
+                                        // console.log("Response Headers:", error.response.headers);
+                                        // console.log("Response Data:", error.response.data);
                                         Toast.fire({
                                             icon: 'error',
                                             title: 'Some error occured! Please try again'
@@ -1241,6 +1293,8 @@
 
 
                             } else {
+                                this.refreshPostOrderData();
+                                console.log("Post Order else Error");
                                 Toast.fire({
                                     icon: 'error',
                                     title: 'Some error occured! Please try again'
@@ -1249,8 +1303,13 @@
                                 this.$Progress.failed();
                             }
                         })
-                        .catch(()=>{
-
+                        .catch((error)=>{
+                            this.refreshPostOrderData();
+                            console.log("Post Order Error");
+                              // Invalid request, for 4xx and 5xx statuses
+                            // console.log("Response Status:", error.response.status);
+                            // console.log("Response Headers:", error.response.headers);
+                            // console.log("Response Data:", error.response.data);
                             Toast.fire({
                                 icon: 'error',
                                 title: 'Some error occured! Please try again'
@@ -1258,6 +1317,60 @@
                         });
 
                 })
+            },
+
+            refreshPostOrderData(){
+                this.postOrderData.payment_method = "";
+                this.postOrderData.payment_method_title = "";
+                this.postOrderData.status = "";
+                this.postOrderData.billing.first_name = "";
+                this.postOrderData.billing.address_1 = "";
+                this.postOrderData.billing.phone ="";
+                this.postOrderData.line_items = [];
+                this.postOrderData.shipping_lines[0].method_id = "";
+                this.postOrderData.shipping_lines[0].method_title = "";
+                this.postOrderData.shipping_lines[0].total = "";
+            },
+
+            preCancelOrder(id){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, Pre-Cancel it!'
+                }).then((result) => {
+
+                    // Send request to the server
+                    if (result.value) {
+
+
+                        this.$Progress.start();
+                        axios.put('api/order/'+id,{status: "pre-cancel"})
+                            .then((response) => {
+                                // success
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: response.data.message
+                                });
+                                this.$Progress.finish();
+                                //  Fire.$emit('AfterCreate');
+
+                                this.loadOrders();
+                                this.diniData = {};
+                            })
+                            .catch(() => {
+                                this.$Progress.fail();
+                                this.diniData = {};
+                            });
+                    }
+                })
+                console.log(id);
+            },
+
+            getOrderStatuses(){
+                axios.get("api/order-status").then(({ data }) => (this.orderStatuses = data));
             }
 
         },
@@ -1270,7 +1383,7 @@
             this.loadOrders();
             this.getPaymentMethod();
             this.getShipping();
-
+            this.getOrderStatuses();
             this.$Progress.finish();
         },
         filters: {
@@ -1305,6 +1418,8 @@
             filterOptions: function(){
                 return this.options.filter(option => !option.stock_status.indexOf("instock"))
             },
+
+
 
 
 

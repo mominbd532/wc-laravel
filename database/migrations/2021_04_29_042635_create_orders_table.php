@@ -39,6 +39,7 @@ class CreateOrdersTable extends Migration
             $table->string('notes')->nullable();
             $table->string('status');
             $table->string('user');
+            $table->tinyInteger('active')->default(1);
             $table->timestamps();
         });
     }

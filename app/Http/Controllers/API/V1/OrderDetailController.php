@@ -57,6 +57,8 @@ class OrderDetailController extends Controller
             'variation_id' =>request('variation_id'),
         ]);
 
+        $orderDetails['message'] = "New Product Added Successfully";
+
         return response($orderDetails);
 
 
@@ -96,7 +98,7 @@ class OrderDetailController extends Controller
         $orderDetails =OrderDetail::findOrFail($id);
 
         $orderDetails->update($request->all());
-
+        $orderDetails['message'] = "Product Update Successfully";
         return response($orderDetails);
     }
 

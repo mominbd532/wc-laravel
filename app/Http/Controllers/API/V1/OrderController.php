@@ -105,6 +105,8 @@ class OrderController extends Controller
             return response('error');
         }
 
+        $order['message'] = "Order Created Successfully";
+
         return response($order);
     }
 
@@ -142,6 +144,8 @@ class OrderController extends Controller
         $order =Order::findOrFail($id);
 
         $order->update($request->all());
+
+        $order['message'] = "Order Updated Successfully";
 
         return response($order);
     }

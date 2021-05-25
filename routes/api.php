@@ -44,6 +44,7 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
         'tag' => 'TagController',
         'order' => 'OrderController',
         'order-details' => 'OrderDetailController',
+        'order-status' => 'OrderStatusController',
         'payment-methods' => 'PaymentMethodController',
         'shipping-titles' => 'ShippingController',
     ]);
