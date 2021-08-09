@@ -35,7 +35,7 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
     Route::post('product/upload', 'ProductController@upload');
 
 
-
+    Route::get('order/date', 'OrderController@dateWiseOrder');
 
     Route::apiResources([
         'user' => 'UserController',

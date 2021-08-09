@@ -22,12 +22,31 @@
             <router-link to="/orders" class="nav-link">
                 <i class="nav-icon fas fa-list orange"></i>
                 <p>
-                    Order
+                   Local Order
                 </p>
             </router-link>
         </li>
 
-      @can('isAdmin')
+        <li class="nav-item">
+            <router-link to="/web-orders" class="nav-link">
+                <i class="nav-icon fas fa-list orange"></i>
+                <p>
+                    Web Order
+                </p>
+            </router-link>
+        </li>
+
+        <li class="nav-item">
+            <router-link to="/reports" class="nav-link">
+                <i class="nav-icon fas fa-list orange"></i>
+                <p>
+                    Reports
+                </p>
+            </router-link>
+        </li>
+
+
+    @can('isAdmin')
         <li class="nav-item">
           <router-link to="/users" class="nav-link">
             <i class="fa fa-users nav-icon blue"></i>

@@ -6,19 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
+use DB;
 
-class OrderController extends Controller
+class OrderController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data =Order::with('orderDetails')->latest()->paginate(10);
+        if($request->per_page != "All"){
+            $data =Order::with('orderDetails')->where('active' ,1)->latest()->paginate($request->per_page);
+            return $this->sendResponse($data, 'Order list');
+        }else{
+            $order =Order::with('orderDetails')->where('active' ,1)->latest()->get();
+            $data['data'] = $order;
+            return $this->sendResponse($data, 'Order list');
+        }
 
-        return response()->json($data);
     }
 
     /**
@@ -160,4 +167,20 @@ class OrderController extends Controller
     {
         //
     }
+
+// Date wise order search
+
+    public function dateWiseOrder(Request $request)
+    {
+        $from = date($request['start_date']);
+        $to = date($request['end_date']);
+
+        $data['data'] =Order::with('orderDetails')->where('active' ,1)->whereBetween(DB::raw('DATE(created_at)'),array($from, $to))->get();
+
+        return $this->sendResponse($data, 'Order list');
+    }
+
+
+
+
 }

@@ -38,7 +38,7 @@ class UserRequest extends FormRequest
     public function createRules(): array
     {
         return [
-            'type' => 'required|in:admin,user',
+            'type' => 'required|in:admin,user,communication,distributor,accounts',
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
             'password' => 'required|string|min:6'
@@ -53,7 +53,7 @@ class UserRequest extends FormRequest
     public function updateRules(): array
     {
         return [
-            'type' => 'sometimes|in:admin,user',
+            'type' => 'sometimes|in:admin,user,communication,distributor,accounts',
             'name' => 'sometimes|string|max:191',
             'email' => 'sometimes|string|email|max:191|unique:users,email,' . $this->get('id')
         ];

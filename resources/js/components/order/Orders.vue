@@ -1,13 +1,43 @@
 <template>
     <section class="content">
         <div class="container-fluid">
+            <div class="row mb-4">
+                <div class="col-9">
+                    <form class="form-inline">
+                        <label class="mr-2">From Date: </label>
+                        <datepicker v-model="start_date" name="start_date"  bootstrap-styling="true" class="mr-2" :disabledDates="state.disabledDates"></datepicker>
+
+
+                        <label class="mr-2">To Date: </label>
+                        <datepicker v-model="end_date" name="end_date"  bootstrap-styling="true"  class="mr-2" :disabledDates="state.disabledDates"></datepicker>
+
+                        <button type="button" class="btn btn-primary" @click="dateWiseOrder">Submit</button>
+                    </form>
+
+
+                </div>
+                <div class="col-3">
+                    <!-- SEARCH FORM -->
+                    <form class="form-inline ml-3">
+                        <div class="input-group">
+                            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" v-model="tableSearch" >
+                        </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-navbar" disabled>
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+
+                    </form>
+                </div>
+            </div>
             <div class="row">
 
                 <div class="col-12">
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Order List</h3>
+                            <h3 class="card-title">Local Order List</h3>
 
                             <div class="card-tools">
 
@@ -18,279 +48,286 @@
                             </div>
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-hover table-fixed">
-                                <thead>
-                                <tr>
-                                    <th>Dini Order Id</th>
-                                    <th>WC Order Id</th>
-                                    <th>Dini Created Date</th>
-                                    <th>Wc Created Date</th>
-                                    <th>Requested Shipping Date</th>
-                                    <th>Order Created Way</th>
-                                    <th>Invoice Number</th>
-                                    <th>Name</th>
-                                    <th>Address</th>
-                                    <th>District</th>
-                                    <th>Phone</th>
-                                    <th>Products</th>
-                                    <th>Payment Method</th>
-                                    <th>Txn Number</th>
-                                    <th>Txn Id</th>
-                                    <th>Coupon Id</th>
-                                    <th>Sub Total</th>
-                                    <th>Fixed Discount</th>
-                                    <th>Percent Discount</th>
-                                    <th>Shipping Titles</th>
-                                    <th>Shipping Cost</th>
-                                    <th>Grand Total</th>
-                                    <th>Status</th>
-                                    <th>Notes</th>
-                                    <th>Print</th>
-                                    <th>Count</th>
-                                    <th>User</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="order in orders">
-                                    <td>{{order.id}}</td>
-                                    <td>{{order.order_id}}</td>
-                                    <td>{{diniDateTime(order.created_at)}}</td>
-                                    <td>{{diniDateTime(order.order_date)}}</td>
-                                    <td>
-                                        <datetime :value="diniDate(order.shipping_date)" name="shipping_date" format="DD/MM/YYYY" class="form-control" :class="{ 'is-invalid': form.errors.has('shipping_date') }" width="225px" :readonly="order.status == 'pre-cancel'" ></datetime>
-                                        <has-error :form="form" field="shipping_date" ></has-error>
-                                    </td>
-                                    <td>{{order.created_way}}</td>
-                                    <td>{{order.invoice_number}}</td>
-                                    <td>
-                                        <input :value="order.name" type="text" name="name"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('name') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                        <has-error :form="form" field="name" ></has-error>
-                                    </td>
-                                    <td>
-                                        <input :value="order.address" type="text" name="address"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('address') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                        <has-error :form="form" field="address" ></has-error>
-                                    </td>
-                                    <td>{{order.district_code}}</td>
-                                    <td>
-                                        <input :value="order.phone" type="text" name="phone"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('phone') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                        <has-error :form="form" field="phone" ></has-error>
+                        <div class="card-body  p-0">
+                            <div class="table-responsive text-nowrap">
+                                <table class="table b-table table-hover" data-sticky-header="true">
+                                    <thead>
+                                    <tr>
 
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary" @click="newModal1(order.id)">Products</button>
-                                    </td>
-                                    <td>
-                                        <select class="form-control" name="payment_method" @change="updateOrder($event, order.id)" style="width: fit-content;" :disabled="order.status == 'pre-cancel'">
-                                            <option
+                                        <th style="width: 200px;"><input type="checkbox"></th>
+                                        <th style="width: 200px;">Id</th>
+                                        <th style="width: 200px;">Date <button class="btn btn-sm float-right" @click="shoringOrders('date')"><i class="fa" :class="ascending && shortingType=='date' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th style="width: 200px;">Name <button class="btn btn-sm float-right" @click="shoringOrders('name')"><i class="fa" :class="ascending && shortingType=='name' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th style="width: 200px;">Address <button class="btn btn-sm float-right"  @click="shoringOrders('address')"><i class="fa" :class="ascending && shortingType=='address' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th style="width: 200px;">Phone <button class="btn btn-sm float-right"><i class="fa fa-chevron-down"></i></button></th>
+                                        <th style="width: 200px;">Products </th>
+                                        <th style="width: 200px;">Pay Method <button class="btn btn-sm float-right"  @click="shoringOrders('payment_method')"><i class="fa" :class="ascending && shortingType=='payment_method' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th style="width: 200px;">Sub Total </th>
+                                        <th style="width: 200px;">Fixed Disc </th>
+                                        <th style="width: 200px;">% Discount </th>
+                                        <th style="width: 200px;">Shipping Titles <button class="btn btn-sm float-right" @click="shoringOrders('shipping_title')"><i class="fa" :class="ascending && shortingType=='shipping_title' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th style="width: 200px;">Shipping Cost </th>
+                                        <th style="width: 200px;">Grand Total </th>
+                                        <th style="width: 200px;">Order Status <button class="btn btn-sm float-right" @click="shoringOrders('status')"><i class="fa" :class="ascending && shortingType=='status' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th style="width: 200px;">Notes</th>
+                                        <th style="width: 200px;">User</th>
+                                        <th style="width: 200px;">Txn Number</th>
+                                        <th style="width: 200px;">Txn Id</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="order in filterOrders">
+                                        <td><input type="checkbox"></td>
+                                        <td>{{order.id}}</td>
+                                        <td >
+                                            <p class="text-wrap" style="width: 100px;"> {{diniDateTime(order.created_at)}}</p>
+                                        </td>
+                                        <td >
+                                        <textarea  name="name"
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('name') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'" style="width: 120px;">{{order.name}}</textarea>
+                                            <has-error :form="form" field="name" ></has-error>
+                                        </td>
+                                        <td >
+                                        <textarea  name="address"
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('address') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'" style="width: 120px;">{{order.address}}</textarea>
+
+                                            <has-error :form="form" field="address" ></has-error>
+                                        </td>
+                                        <td >
+                                            <input :value="order.phone" type="text" name="phone"
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('phone') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'" style="width: 120px;">
+                                            <has-error :form="form" field="phone" ></has-error>
+
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary" @click="newModal1(order.id)">Products</button>
+                                        </td>
+                                        <td >
+                                            <select class="form-control" name="payment_method" @change="updateOrder($event, order.id)"  :disabled="order.status == 'pre-cancel'">
+                                                <option
                                                     v-for="(payment,index) in paymentMethods" :key="index"
                                                     :value="payment.method" :selected="order.payment_method == payment.method">{{payment.pay_name}}</option>
-                                        </select>
-                                        <has-error :form="form" field="payment_method"></has-error>
-                                    </td>
-                                    <td>
-                                        <input :value="order.txn_num" type="text" name="txn_num"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('txn_num') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                        <has-error :form="form" field="txn_num" ></has-error>
-                                    </td>
-                                    <td>
-                                        <input :value="order.txn_id" type="text" name="txn_id"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('txn_id') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                        <has-error :form="form" field="txn_id" ></has-error>
-                                    </td>
-                                    <td>
-                                        <input :value="order.coupon" type="text" name="coupon"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('coupon') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                        <has-error :form="form" field="coupon" ></has-error>
-                                    </td>
-                                    <td>{{subTotalList(order.order_details)}} TK</td>
-                                    <td>
-                                        <input :value="order.discount" type="number" name="discount"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('discount') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                        <has-error :form="form" field="discount" ></has-error>
-                                    </td>
-                                    <td>
-                                        <input :value="order.discount_percent" type="number" name="discount_percent"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('discount_percent') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                        <has-error :form="form" field="discount_percent" ></has-error>
-                                    </td>
-                                    <td>
-                                        <select class="form-control" name="shipping_title" @change="updateOrder($event, order.id)" style="width: fit-content;" :disabled="order.status == 'pre-cancel'">
-                                            <option
+                                            </select>
+                                            <has-error :form="form" field="payment_method"></has-error>
+                                        </td>
+
+
+                                        <td >{{subTotalList(order.order_details)}} TK</td>
+                                        <td>
+                                            <input :value="order.discount" type="number" name="discount"
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('discount') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
+                                            <has-error :form="form" field="discount" ></has-error>
+                                        </td>
+                                        <td>
+                                            <input :value="order.discount_percent" type="number" name="discount_percent"
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('discount_percent') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
+                                            <has-error :form="form" field="discount_percent" ></has-error>
+                                        </td>
+                                        <td >
+                                            <select class="form-control" name="shipping_title" @change="updateOrder($event, order.id)"  :disabled="order.status == 'pre-cancel'">
+                                                <option
                                                     v-for="(ship,index) in shippings" :key="index"
                                                     :value="ship.ship_title" :selected="order.shipping_title == ship.ship_title">{{ship.ship_title}}</option>
-                                        </select>
-                                        <has-error :form="form" field="shipping_title"></has-error>
-                                    </td>
-                                    <td>
-                                        <input :value="order.shipping_cost" type="number" name="shipping_cost"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('shipping_cost') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                        <has-error :form="form" field="shipping_cost" ></has-error>
-                                    </td>
+                                            </select>
+                                            <has-error :form="form" field="shipping_title"></has-error>
+                                        </td>
+                                        <td>
+                                            <input :value="order.shipping_cost" type="number" name="shipping_cost"
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('shipping_cost') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
+                                            <has-error :form="form" field="shipping_cost" ></has-error>
+                                        </td>
 
-                                    <td>{{grandTotalList(order)}} TK</td>
-                                    <td>
-                                        <button v-if="order.status == 'new'" type="button" class="btn btn-primary" @click="postOrder(order.id)">Confirm</button>
-                                        <button v-if="order.status == 'new'" type="button" class="btn btn-danger" @click="preCancelOrder(order.id)">Pre-Cancel</button>
-                                        <p v-else-if="order.status == 'pre-cancel'" style="color: red;">Pre-Cancelled</p>
-                                        <v-select v-else label="name" :options="orderStatuses"></v-select>
-                                    </td>
-                                    <td>
-                                        <input :value="order.note" type="text" name="note"
-                                               class="form-control" :class="{ 'is-invalid': form.errors.has('note') }" style="width: fit-content;" @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                        <has-error :form="form" field="note" ></has-error>
-                                    </td>
-                                    <td><a :href="'https://dini.com.bd/wp-admin/admin-ajax.php?action=generate_wpo_wcpdf&document_type=invoice&order_ids='+order.order_id+'&_wpnonce=878adeafb9'" target="_blank" class="btn btn-info" :style="[order.order_id ? {}:{'pointer-events': 'none'}]" >Print</a></td>
-                                    <td>{{order.print_count}}</td>
-                                    <td>{{order.user}}</td>
+                                        <td >{{grandTotalList(order)}} TK</td>
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" :id="`products${order.id}`" tabindex="-1" role="dialog" aria-labelledby="editProduct" aria-hidden="true">
-                                        <div class="modal-dialog modal-xl" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Products List</h5>
+                                        <td>
+                                            <select  class="form-control" name="status" @change="postOrder($event,order.id)" >
+                                                <option value="" selected> Please Select a option</option>
+                                                <option v-if="order.status == 'new'" value="confirm" >Confirm</option>
+                                                <option v-if="order.status == 'new'" value="pre-cancel" >Pre-Cancel</option>
+                                                <option v-if="order.status == 'pre-cancel'" value="un-cancel">Un-Cancel</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <textarea type="text" name="note"
+                                                      class="form-control" :class="{ 'is-invalid': form.errors.has('note') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'"  style="width: 200px;">{{order.note}}</textarea>
+                                            <has-error :form="form" field="note" ></has-error>
+                                        </td>
+                                        <td>{{order.user}}</td>
+                                        <td>
+                                            <input :value="order.txn_num" type="text" name="txn_num"
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('txn_num') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
+                                            <has-error :form="form" field="txn_num" ></has-error>
+                                        </td>
+                                        <td>
+                                            <input :value="order.txn_id" type="text" name="txn_id"
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('txn_id') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
+                                            <has-error :form="form" field="txn_id" ></has-error>
+                                        </td>
 
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <input type="checkbox" id="checkbox1" v-model="checked">
-                                                            <label for="checkbox1">SKU Search</label>
-                                                        </div>
-                                                        <div class="col-5">
+                                        <!-- Modal -->
+                                        <div class="modal fade" :id="`products${order.id}`" tabindex="-1" role="dialog" aria-labelledby="editProduct" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Products List</h5>
 
-                                                            <label for="select1" class="col-8 control-label">
-                                                                Please Add Products
-                                                            </label>
-                                                            <v-select v-if="!checked" label="name" :filterable="false" :options="filterOptions" @search="onSearch" v-model="result1" @input="variationLoad">
-                                                                <template slot="no-options">
-                                                                    type to search by name..
-                                                                </template>
-                                                                <template slot="option" slot-scope="option">
-                                                                    <div class="d-center">
-
-                                                                        {{ option.name}}- {{option.sku}}
-                                                                    </div>
-                                                                </template>
-                                                                <template slot="selected-option" slot-scope="option" >
-                                                                    <div class="selected d-center">
-
-                                                                        {{ option.name }} - {{option.sku}}
-                                                                    </div>
-                                                                </template>
-                                                            </v-select>
-
-                                                            <v-select v-if="checked" label="name" :filterable="false" :options="filterOptions" @search="onSearch1" v-model="result1" @input="variationLoad">
-                                                                <template slot="no-options">
-                                                                    type to search by sku..
-                                                                </template>
-                                                                <template slot="option" slot-scope="option">
-                                                                    <div class="d-center">
-
-                                                                        {{ option.name}}- {{option.sku}}
-                                                                    </div>
-                                                                </template>
-                                                                <template slot="selected-option" slot-scope="option" >
-                                                                    <div class="selected d-center">
-
-                                                                        {{ option.name }} - {{option.sku}}
-                                                                    </div>
-                                                                </template>
-                                                            </v-select>
-
-                                                            <label v-if="variationSelect" for="select1" class="col-8 control-label">
-                                                                Please Select Variation
-                                                            </label>
-
-                                                            <select v-if="variationSelect" v-model="variation_info" @change="changeProductName($event)" style="width: 100%; margin-bottom: 10px">
-                                                                <option v-if="variation.stock_status = 'instock'" v-for="(variation,index) in options2" v-bind:value="{id: variation.id, name: variation.name, sku: variation.sku }">
-                                                                    {{variation.name}} - ({{variation.sku}})
-                                                                </option>
-                                                            </select>
-
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <label>Quantity</label>
-                                                            <input v-model="addQuantity" type="number" name="quantity"
-                                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('quantity') }">
-                                                            <has-error :form="form" field="quantity"></has-error>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <button type="button" class="btn btn-success mt-4" @click="addProductEdit(order.id)" :disabled="order.status == 'pre-cancel'" >
-                                                                <i class="fas fa-plus"></i>
-                                                            </button>
-
-
-                                                        </div>
-
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <table class="table">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th scope="col">#</th>
-                                                                    <th scope="col">Name</th>
-                                                                    <th scope="col">SKU</th>
-                                                                    <th scope="col">Price</th>
-                                                                    <th scope="col">Quantity</th>
-                                                                    <th scope="col">Total</th>
-                                                                    <th scope="col">Action</th>
-                                                                </tr>
-                                                                </thead>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-2">
+                                                                <input type="checkbox" id="checkbox1" v-model="checked">
+                                                                <label for="checkbox1">SKU Search</label>
+                                                            </div>
+                                                            <div class="col-5">
 
-                                                                <tbody>
-                                                                <tr v-for="(detail,index) in order.order_details" :key="index">
-                                                                    <th scope="row">{{index+1}}</th>
-                                                                    <td>{{detail.product_name}}</td>
-                                                                    <td>{{detail.sku}}</td>
-                                                                    <td>
-                                                                        {{detail.price}}
-                                                                    </td>
-                                                                    <td>
-                                                                        <input :value="detail.quantity" type="number" name="quantity"
-                                                                               class="form-control" :class="{ 'is-invalid': form.errors.has('quantity') }" style="width: fit-content;" @change="updateOrderDetails($event, detail.id)" :readonly="order.status == 'pre-cancel'">
-                                                                        <has-error :form="form" field="quantity" ></has-error>
-                                                                    </td>
-                                                                    <td>
-                                                                        {{detail.price * detail.quantity}}
-                                                                    </td>
-                                                                    <td><button type="button" class="btn btn-danger" @click="deleteProduct(detail.id)" :disabled="order.status == 'pre-cancel'" >
-                                                                        <i class="fas fa-minus"></i>
-                                                                    </button>
-                                                                    </td>
-                                                                </tr>
+                                                                <label for="select1" class="col-8 control-label">
+                                                                    Please Add Products
+                                                                </label>
+                                                                <v-select v-if="!checked" label="name" :filterable="false" :options="filterOptions" @search="onSearch" v-model="result1" @input="variationLoad">
+                                                                    <template slot="no-options">
+                                                                        type to search by name..
+                                                                    </template>
+                                                                    <template slot="option" slot-scope="option">
+                                                                        <div class="d-center">
 
-                                                                </tbody>
-                                                            </table>
+                                                                            {{ option.name}}- {{option.sku}}
+                                                                        </div>
+                                                                    </template>
+                                                                    <template slot="selected-option" slot-scope="option" >
+                                                                        <div class="selected d-center">
+
+                                                                            {{ option.name }} - {{option.sku}}
+                                                                        </div>
+                                                                    </template>
+                                                                </v-select>
+
+                                                                <v-select v-if="checked" label="name" :filterable="false" :options="filterOptions" @search="onSearch1" v-model="result1" @input="variationLoad">
+                                                                    <template slot="no-options">
+                                                                        type to search by sku..
+                                                                    </template>
+                                                                    <template slot="option" slot-scope="option">
+                                                                        <div class="d-center">
+
+                                                                            {{ option.name}}- {{option.sku}}
+                                                                        </div>
+                                                                    </template>
+                                                                    <template slot="selected-option" slot-scope="option" >
+                                                                        <div class="selected d-center">
+
+                                                                            {{ option.name }} - {{option.sku}}
+                                                                        </div>
+                                                                    </template>
+                                                                </v-select>
+
+                                                                <label v-if="variationSelect" for="select1" class="col-8 control-label">
+                                                                    Please Select Variation
+                                                                </label>
+
+                                                                <select v-if="variationSelect" v-model="variation_info" @change="changeProductName($event)" style="width: 100%; margin-bottom: 10px">
+                                                                    <option v-if="variation.stock_status = 'instock'" v-for="(variation,index) in options2" v-bind:value="{id: variation.id, name: variation.name, sku: variation.sku }">
+                                                                        {{variation.name}} - ({{variation.sku}})
+                                                                    </option>
+                                                                </select>
+
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <label>Quantity</label>
+                                                                <input v-model="addQuantity" type="number" name="quantity"
+                                                                       class="form-control" :class="{ 'is-invalid': form.errors.has('quantity') }">
+                                                                <has-error :form="form" field="quantity"></has-error>
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <button type="button" class="btn btn-success mt-4" @click="addProductEdit(order.id)" :disabled="order.status == 'pre-cancel'" >
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+
+
+                                                            </div>
+
                                                         </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col">#</th>
+                                                                        <th scope="col">Name</th>
+                                                                        <th scope="col">SKU</th>
+                                                                        <th scope="col">Price</th>
+                                                                        <th scope="col">Quantity</th>
+                                                                        <th scope="col">Total</th>
+                                                                        <th scope="col">Action</th>
+                                                                    </tr>
+                                                                    </thead>
 
+                                                                    <tbody>
+                                                                    <tr v-for="(detail,index) in order.order_details" :key="index">
+                                                                        <th scope="row">{{index+1}}</th>
+                                                                        <td>{{detail.product_name}}</td>
+                                                                        <td>{{detail.sku}}</td>
+                                                                        <td>
+                                                                            {{detail.price}}
+                                                                        </td>
+                                                                        <td>
+                                                                            <input :value="detail.quantity" type="number" name="quantity"
+                                                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('quantity') }"  @change="updateOrderDetails($event, detail.id)" :readonly="order.status == 'pre-cancel'">
+                                                                            <has-error :form="form" field="quantity" ></has-error>
+                                                                        </td>
+                                                                        <td>
+                                                                            {{detail.price * detail.quantity}}
+                                                                        </td>
+                                                                        <td><button type="button" class="btn btn-danger" @click="deleteProduct(detail.id)" :disabled="order.status == 'pre-cancel'" >
+                                                                            <i class="fas fa-minus"></i>
+                                                                        </button>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                        </div>
                                                     </div>
+
                                                 </div>
+
 
                                             </div>
-
-
                                         </div>
-                                    </div>
 
 
-                                </tr>
+                                    </tr>
+
+                                    <tr v-if="!filterOrders.length">
+                                        <td colspan="19">
+                                            <div style="text-align: center;"><p>No data found</p></div>
+                                        </td>
+                                    </tr>
 
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <pagination :data="orders" @pagination-change-page="getResults"></pagination>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="cars">Per page:</label>
+
+                                    <select v-model="per_page" @change="changePagination">
+                                        <option v-for="pages in select_per_pages" >{{pages}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <pagination :data="orders" @pagination-change-page="getResults" class="float-right"></pagination>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <!-- /.card -->
@@ -432,9 +469,7 @@
                                             </label>
 
                                             <select v-if="variationSelect" v-model="variation_info" @change="changeProductName($event)" style="width: 100%; margin-bottom: 10px">
-                                                <option v-if="variation.stock_status = 'instock'" v-for="(variation,index) in options2" v-bind:value="{id: variation.id, name: variation.name, sku: variation.sku }">
-                                                    {{variation.name}} - ({{variation.sku}})
-                                                </option>
+                                                <option v-if="variation.stock_status = 'instock'" v-for="(variation,index) in options2" v-bind:value="{id: variation.id, name: variation.name, sku: variation.sku }">{{variation.name}} - {{variation.sku}}</option>
                                             </select>
 
                                         </div>
@@ -553,8 +588,9 @@
     import moment from 'moment';
     import vSelect from "vue-select";
     import _ from 'lodash';
-    import datetime from 'vuejs-datetimepicker';
+    import Datepicker from 'vuejs-datepicker';
     import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
+
 
     const diniApi = new WooCommerceRestApi({
         url: "https://dini.com.bd",
@@ -568,7 +604,7 @@
         components: {
             VueTagsInput,
             vSelect,
-            datetime,
+            Datepicker,
         },
         data () {
             return {
@@ -652,7 +688,25 @@
                     ]
                 },
 
-                orderStatuses: [],
+                per_page: "10",
+                select_per_pages: [
+                    10,20,30,50,'All'
+                ],
+
+                // serching
+
+                start_date: "",
+                end_date: "",
+
+                state : {
+                    disabledDates: {
+                        from: new Date(),
+                    }
+                },
+
+                shortingType: null,
+                ascending: false,
+                tableSearch: null,
 
 
             }
@@ -672,14 +726,14 @@
 
                 this.$Progress.start();
 
-                axios.get('api/order?page=' + page).then(({ data }) => (this.orders = data.data));
+                axios.get('api/order?page=' + page+'&per_page='+this.per_page).then(({ data }) => (this.orders = data.data));
 
                 this.$Progress.finish();
             },
             loadOrders(){
 
                 // if(this.$gate.isAdmin()){
-                axios.get("api/order").then(({ data }) => (this.orders = data.data));
+                axios.get('api/order?per_page='+this.per_page).then(({ data }) => (this.orders = data.data));
 
                 // }
             },
@@ -688,27 +742,25 @@
 
                 // if(this.$gate.isAdmin()){
                 this.$Progress.start();
-                axios.get('https://dini.com.bd/wp-json/wc/v3/products?consumer_key=ck_5ad6f72002ba15d858f1d1d1b720875989a94a19&consumer_secret=cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31').then((res) => {
-                    let getData = [];
-                    $.each(res.data, function(key, value) {
 
-                        getData.push({
-                            label: value.name,
-                            code: value.id
+                diniApi.get("products")
+                    .then((response) => {
+                        let getData = [];
+                        $.each(response.data, function(key, value) {
+
+                            getData.push({
+                                label: value.name,
+                                code: value.id
+                            });
+
+                            // this.options = getData;
+                            this.$Progress.finish();
+
                         });
-
-
-
-                    });
-
-                      this.options = getData;
-                    this.$Progress.finish();
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.log(error);
-                    });
-
-
+                    })
 
                 // }
             },
@@ -747,7 +799,7 @@
 
                         if(data.statusText == 'OK'){
                             $('#addNew').modal('hide');
-                            console.log(data.data);
+                            // console.log(data.data);
 
                             Toast.fire({
                                 icon: 'success',
@@ -1022,42 +1074,36 @@
 
             getProductName(id){
 
-                let url = "";
-                url = "https://dini.com.bd/wp-json/wc/v3/products/"+id+"?consumer_key=ck_5ad6f72002ba15d858f1d1d1b720875989a94a19&consumer_secret=cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31";
-
-                axios.get(url).then((res) => {
-                    return id;
-                })
-                    .catch(error => {
+                diniApi.get("products/"+id)
+                    .then((response) => {
+                        return response;
+                    })
+                    .catch((error) => {
                         console.log(error);
-                        return "Name Null";
-                    });
-
-
+                    })
             },
 
             variationLoad(){
 
-                    if(this.result1.type == "variable"){
+                if(this.result1.type == "variable"){
 
-                        let getData = [];
-                        $.each(this.result1.variations, function(key, value) {
-                            let url = "";
-                            url = "https://dini.com.bd/wp-json/wc/v3/products/"+value+"?consumer_key=ck_5ad6f72002ba15d858f1d1d1b720875989a94a19&consumer_secret=cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31";
+                    let getData = [];
+                    $.each(this.result1.variations, function(key, value) {
 
-                            axios.get(url).then((res) => {
-                                getData.push(res.data);
+                        diniApi.get("products/"+value)
+                            .then((response) => {
+                                getData.push(response.data);
                             })
-                                .catch(error => {
-                                    console.log(error);
-                                });
+                            .catch((error) => {
+                                console.log(error);
+                            })
 
 
-                        });
-                        this.variationSelect = true;
-                        this.options2 = getData;
+                    });
+                    this.variationSelect = true;
+                    this.options2 = getData;
 
-                    }
+                }
 
             },
 
@@ -1087,21 +1133,18 @@
 
                 return newData;
             },
-            postOrder(id){
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, confirm order!'
-                }).then((result) => {
+            postOrder(event,id){
+
+
+                if(event.target.value == 'confirm'){
+
                     this.$Progress.start();
 
-                     this.orderSelectID = id;
-                     let getData = this.postOrderData;
-                     let getPaymentMethods = this.paymentMethods;
-                    $.each(this.orders, function(key, value) {
+                    this.orderSelectID = id;
+                    let getData = this.postOrderData;
+                    let getPaymentMethods = this.paymentMethods;
+                    let listOrderData = this.filterOrders;
+                    $.each(listOrderData, function(key, value) {
 
                         if(value.id == id){
                             getData.billing.first_name = value.name;
@@ -1157,7 +1200,7 @@
 
                     });
 
-                     this.postOrderData = getData;
+                    this.postOrderData = getData;
 
                     // Post Order
 
@@ -1171,7 +1214,7 @@
 
                             if(response.data.id){
                                 var noteUrl = "orders/"+response.data.id+"/notes";
-                               // Add Order Create note
+                                // Add Order Create note
                                 diniApi.post(noteUrl,{
                                     note: "Order Created from local by"+user.name
                                 })
@@ -1234,30 +1277,32 @@
                                             axios.put("api/order/"+id,{
                                                 order_id: response.data.id,
                                                 status: response.data.status,
-                                                invoice_number: parseInt(even)
+                                                order_date: response.data.date_created,
+                                                invoice_number: parseInt(even),
+                                                active: 0,
                                             }).then((data)=>{
 
-                                                    if(data.statusText == 'OK'){
-                                                        Toast.fire({
-                                                            icon: 'success',
-                                                            title: data.data.message
-                                                        });
+                                                if(data.statusText == 'OK'){
+                                                    Toast.fire({
+                                                        icon: 'success',
+                                                        title: data.data.message
+                                                    });
 
-                                                        this.refreshPostOrderData();
-                                                        this.$Progress.finish();
-                                                        this.loadOrders();
+                                                    this.refreshPostOrderData();
+                                                    this.$Progress.finish();
+                                                    this.loadOrders();
 
-                                                    } else {
-                                                        console.log("Update on local data base else Error");
-                                                        this.refreshPostOrderData();
-                                                        Toast.fire({
-                                                            icon: 'error',
-                                                            title: 'Some error occured! Please try again'
-                                                        });
+                                                } else {
+                                                    console.log("Update on local data base else Error");
+                                                    this.refreshPostOrderData();
+                                                    Toast.fire({
+                                                        icon: 'error',
+                                                        title: 'Some error occured! Please try again'
+                                                    });
 
-                                                        this.$Progress.failed();
-                                                    }
-                                                })
+                                                    this.$Progress.failed();
+                                                }
+                                            })
                                                 .catch(()=>{
                                                     console.log("Update on local data base Error");
                                                     this.refreshPostOrderData();
@@ -1306,7 +1351,7 @@
                         .catch((error)=>{
                             this.refreshPostOrderData();
                             console.log("Post Order Error");
-                              // Invalid request, for 4xx and 5xx statuses
+                            // Invalid request, for 4xx and 5xx statuses
                             // console.log("Response Status:", error.response.status);
                             // console.log("Response Headers:", error.response.headers);
                             // console.log("Response Data:", error.response.data);
@@ -1316,7 +1361,54 @@
                             });
                         });
 
-                })
+
+                }
+
+                if(event.target.value == "pre-cancel"){
+
+                    this.$Progress.start();
+                    axios.put('api/order/'+id,{status: "pre-cancel"})
+                        .then((response) => {
+                            // success
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.data.message
+                            });
+                            this.$Progress.finish();
+                            //  Fire.$emit('AfterCreate');
+
+                            this.loadOrders();
+                            this.diniData = {};
+                        })
+                        .catch(() => {
+                            this.$Progress.fail();
+                            this.diniData = {};
+                        });
+
+                    console.log(id);
+                }
+                if(event.target.value == "un-cancel"){
+                    this.$Progress.start();
+                    axios.put('api/order/'+id,{status: "new"})
+                        .then((response) => {
+                            // success
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.data.message
+                            });
+                            this.$Progress.finish();
+                            //  Fire.$emit('AfterCreate');
+
+                            this.loadOrders();
+                            this.diniData = {};
+                        })
+                        .catch(() => {
+                            this.$Progress.fail();
+                            this.diniData = {};
+                        });
+
+                }
+
             },
 
             refreshPostOrderData(){
@@ -1332,46 +1424,45 @@
                 this.postOrderData.shipping_lines[0].total = "";
             },
 
-            preCancelOrder(id){
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, Pre-Cancel it!'
-                }).then((result) => {
-
-                    // Send request to the server
-                    if (result.value) {
-
-
-                        this.$Progress.start();
-                        axios.put('api/order/'+id,{status: "pre-cancel"})
-                            .then((response) => {
-                                // success
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: response.data.message
-                                });
-                                this.$Progress.finish();
-                                //  Fire.$emit('AfterCreate');
-
-                                this.loadOrders();
-                                this.diniData = {};
-                            })
-                            .catch(() => {
-                                this.$Progress.fail();
-                                this.diniData = {};
-                            });
-                    }
-                })
-                console.log(id);
+            changePagination(){
+                this.loadOrders();
             },
 
-            getOrderStatuses(){
-                axios.get("api/order-status").then(({ data }) => (this.orderStatuses = data));
+            dateWiseOrder(){
+                if(this.start_date && this.end_date){
+                    if(this.start_date <= this.end_date){
+                        var start = moment(this.start_date).format('YYYY-MM-DD');
+                        var end = moment(this.end_date).format('YYYY-MM-DD');
+                        console.log(start);
+                        console.log(end);
+
+                        this.$Progress.start();
+
+                        axios.get('api/order/date?start_date='+start+'&end_date='+end).then(({ data }) => (this.orders = data.data));
+
+                        this.$Progress.finish();
+
+                    }else{
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Wrong date range selected'
+                        });
+                    }
+                }else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Date range not selected'
+                    });
+                }
+
+            },
+
+            shoringOrders(type){
+                this.shortingType = type;
+                this.ascending = !this.ascending;
             }
+
+
 
         },
         mounted() {
@@ -1383,7 +1474,6 @@
             this.loadOrders();
             this.getPaymentMethod();
             this.getShipping();
-            this.getOrderStatuses();
             this.$Progress.finish();
         },
         filters: {
@@ -1415,9 +1505,156 @@
                 total1 = total1/100;
                 return total1;
             },
+
             filterOptions: function(){
                 return this.options.filter(option => !option.stock_status.indexOf("instock"))
             },
+
+            filterOrders: function () {
+                let orders  =this.orders.data;
+                let searchQuery =this.tableSearch;
+                let shortType = this.shortingType;
+
+                // Process search input
+                if (searchQuery != null && searchQuery) {
+                    orders = orders.filter((item) => {
+                        return item.name
+                            .toUpperCase()
+                            .includes(searchQuery.toUpperCase()) || item.address
+                            .toUpperCase()
+                            .includes(searchQuery.toUpperCase()) || item.phone
+                            .toUpperCase()
+                            .includes(searchQuery.toUpperCase())
+                    })
+                }
+
+                if(shortType){
+                    // Sort by date order
+                    if(shortType == "date"){
+                        orders = orders.sort((a, b) => {return a.created_at - b.created_at});
+
+                        // Show sorted array in descending or ascending order
+                        if (!this.ascending) {
+                            orders.reverse()
+                        }
+
+                        // return orders;
+                    }else if(shortType == "name"){
+                        // Sort by name alphabetical order
+                        orders = orders.sort((a, b) => {
+                            let fa = a.name.toLowerCase(), fb = b.name.toLowerCase()
+
+                            if (fa < fb) {
+                                return -1
+                            }
+                            if (fa > fb) {
+                                return 1
+                            }
+                            return 0
+
+                        });
+
+                        if (!this.ascending) {
+                            orders.reverse()
+                        }
+
+                        // return orders;
+                    }
+                    else if(shortType == "address"){
+                        // Sort by address alphabetical order
+                        orders = orders.sort((a, b) => {
+                            let fa = a.address.toLowerCase(), fb = b.address.toLowerCase()
+
+                            if (fa < fb) {
+                                return -1
+                            }
+                            if (fa > fb) {
+                                return 1
+                            }
+                            return 0
+
+                        });
+
+                        if (!this.ascending) {
+                            orders.reverse()
+                        }
+
+                        // return orders;
+                    }
+                    else if(shortType == "payment_method"){
+                        // Sort by pay method alphabetical order
+                        orders = orders.sort((a, b) => {
+                            let fa = a.payment_method.toLowerCase(), fb = b.payment_method.toLowerCase()
+
+                            if (fa < fb) {
+                                return -1
+                            }
+                            if (fa > fb) {
+                                return 1
+                            }
+                            return 0
+
+                        });
+
+                        if (!this.ascending) {
+                            orders.reverse()
+                        }
+
+                        // return orders;
+                    }
+                    else if(shortType == "shipping_title"){
+                        // Sort by shipping titles alphabetical order
+                        orders = orders.sort((a, b) => {
+                            let fa = a.shipping_title.toLowerCase(), fb = b.shipping_title.toLowerCase()
+
+                            if (fa < fb) {
+                                return -1
+                            }
+                            if (fa > fb) {
+                                return 1
+                            }
+                            return 0
+
+                        });
+
+                        if (!this.ascending) {
+                            orders.reverse()
+                        }
+
+                        // return orders;
+                    }
+                    else if(shortType == "status"){
+                        // Sort by shipping titles alphabetical order
+                        orders = orders.sort((a, b) => {
+                            let fa = a.status.toLowerCase(), fb = b.status.toLowerCase()
+
+                            if (fa < fb) {
+                                return -1
+                            }
+                            if (fa > fb) {
+                                return 1
+                            }
+                            return 0
+
+                        });
+
+                        if (!this.ascending) {
+                            orders.reverse()
+                        }
+
+                        // return orders;
+                    }
+
+                }
+
+
+                return orders;
+
+
+            },
+
+
+
 
 
 
@@ -1431,5 +1668,8 @@
 </script>
 
 <style scoped>
+
+
+
 
 </style>

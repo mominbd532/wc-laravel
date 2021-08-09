@@ -22,6 +22,8 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/invoice-genarte/{id}', [App\Http\Controllers\HomeController::class, 'invoiceGenarate'])->name('invoiceGenarate');
+
 Route::get('home', function () {
     return redirect('/dashboard');
 });

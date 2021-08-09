@@ -4,13 +4,13 @@
         <div class="row">
 
           <div class="col-12">
-        
+
             <div class="card" v-if="$gate.isAdmin()">
               <div class="card-header">
                 <h3 class="card-title">User List</h3>
 
                 <div class="card-tools">
-                  
+
                   <button type="button" class="btn btn-sm btn-primary" @click="newModal">
                       <i class="fa fa-plus-square"></i>
                       Add New
@@ -97,20 +97,24 @@
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
                             <has-error :form="form" field="email"></has-error>
                         </div>
-                    
+
                         <div class="form-group">
                             <label>Password</label>
                             <input v-model="form.password" type="password" name="password"
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('password') }" autocomplete="false">
                             <has-error :form="form" field="password"></has-error>
                         </div>
-                    
+
                         <div class="form-group">
                             <label>User Role</label>
                             <select name="type" v-model="form.type" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
                                 <option value="">Select User Role</option>
                                 <option value="admin">Admin</option>
                                 <option value="user">Standard User</option>
+                                <option value="user">Standard User</option>
+                                <option value="communication">Communication</option>
+                                <option value="distributor">Distributor</option>
+                                <option value="accounts">Accounts</option>
                             </select>
                             <has-error :form="form" field="type"></has-error>
                         </div>
@@ -149,7 +153,7 @@
             getResults(page = 1) {
 
                   this.$Progress.start();
-                  
+
                   axios.get('api/user?page=' + page).then(({ data }) => (this.users = data.data));
 
                   this.$Progress.finish();
@@ -221,7 +225,7 @@
 
             this.$Progress.finish();
           },
-          
+
           createUser(){
 
               this.form.post('api/user')
