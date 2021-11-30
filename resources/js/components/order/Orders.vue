@@ -589,15 +589,6 @@
     import vSelect from "vue-select";
     import _ from 'lodash';
     import Datepicker from 'vuejs-datepicker';
-    import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
-
-
-    const diniApi = new WooCommerceRestApi({
-        url: "https://dini.com.bd",
-        consumerKey: "ck_5ad6f72002ba15d858f1d1d1b720875989a94a19",
-        consumerSecret: "cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31",
-        version: "wc/v3"
-    });
 
 
     export default {
@@ -841,7 +832,7 @@
             search: _.debounce((loading, search, vm) => {
 
                 fetch(
-                    `https://dini.com.bd/wp-json/wc/v3/products?search=${escape(search)}&consumer_key=ck_5ad6f72002ba15d858f1d1d1b720875989a94a19&consumer_secret=cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31`
+                    process.env.MIX_WC_URL+`/wp-json/`+process.env.MIX_WC_VERSION+`/products?search=${escape(search)}&consumer_key=`+process.env.MIX_WC_CONSUMER_KEY+`&consumer_secret=`+process.env.MIX_WC_CONSUMER_SECRET
                 ).then(res => {
                     res.json().then(json => (vm.options = json));
                     loading(false);
@@ -862,7 +853,7 @@
             search1: _.debounce((loading, search, vm) => {
 
                 fetch(
-                    `https://dini.com.bd/wp-json/wc/v3/products?sku=${escape(search)}&consumer_key=ck_5ad6f72002ba15d858f1d1d1b720875989a94a19&consumer_secret=cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31`
+                    process.env.MIX_WC_URL+`/wp-json/`+process.env.MIX_WC_VERSION+`/products?search=${escape(search)}&consumer_key=`+process.env.MIX_WC_CONSUMER_KEY+`&consumer_secret=`+process.env.MIX_WC_CONSUMER_SECRET
                 ).then(res => {
                     res.json().then(json => (vm.options = json));
                     loading(false);

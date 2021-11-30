@@ -45,7 +45,7 @@
                                <option v-for="(orderStatus,index) in orderStatuses" :key="index" :value="orderStatus.status">Change status to {{orderStatus.name}}</option>
                             </select>
                             <button type="button" class="btn btn-sm btn-info" @click="multiActions" :disabled="!selectedAction">Action</button>
-                            
+
                             <div class="card-tools">
                                 <button type="button" class="btn btn-sm btn-primary" @click="newModal">
                                     <i class="fa fa-plus-square"></i>
@@ -106,7 +106,7 @@
                                         <select class="form-control" name="payment_method" style="width: fit-content;" @change="updatePaymentMethod($event, order.id)">
                                             <option v-for="(payment,index) in paymentMethods" :key="index" :selected="order.payment_method == payment.method" >{{payment.pay_name}}</option>
                                         </select>
-                        
+
                                     </td>
 
                                     <td>{{parseInt(order.total) + parseInt(order.discount_total) - parseInt(order.shipping_total)}} TK</td>
@@ -119,7 +119,7 @@
                                     </td>
                                     <td>
                                         <input :value="order.shipping_total" type="number" name="shipping_cost" class="form-control" style="width: fit-content;" @change="updateShippingCost($event, order)" >
-                                      
+
                                     </td>
 
                                     <td>{{order.total}} TK</td>
@@ -139,16 +139,16 @@
                                     <td>
                                         <input :value="order.txn_num" type="text" name="txn_num"
                                                class="form-control" style="width: fit-content;" @change="order.order_id ? updateOrderTest($event, order.id, order.order_id) : updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                    
+
                                     </td>
                                     <td>
                                         <input :value="order.txn_id" type="text" name="txn_id"
                                                class="form-control"style="width: fit-content;" @change="order.order_id ? updateOrderTest($event, order.id, order.order_id) : updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
-                                      
+
                                     </td>
                                     <td>
                                         <button v-if="order.coupon_lines.length > 0" type="button" class="btn btn-secondary" @click="couponsModal(order.id)">Coupons</button>
-                                        
+
                                     </td>
 
                                     <!--Note Modal -->
@@ -156,7 +156,7 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title">Notes List for Invoice: 
+                                                    <h5 class="modal-title">Notes List for Invoice:
                                                         <span v-for="meta_info in order.meta_data" v-if="meta_info.key == '_wcpdf_invoice_number'">{{meta_info.value}}</span>
                                                     </h5>
 
@@ -165,7 +165,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    
+
                                                     <div class="notes" v-for="noteN in orderNotes">
                                                         <div class="note_content">
                                                             <p>
@@ -187,7 +187,7 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title">Coupons List for Invoice: 
+                                                    <h5 class="modal-title">Coupons List for Invoice:
                                                         <span v-for="meta_info in order.meta_data" v-if="meta_info.key == '_wcpdf_invoice_number'">{{meta_info.value}}</span>
                                                     </h5>
 
@@ -202,7 +202,7 @@
                                                           <th scope="col">#</th>
                                                           <th scope="col">Code</th>
                                                           <th scope="col">Amount</th>
-                                                          
+
                                                         </tr>
                                                       </thead>
                                                       <tbody>
@@ -211,10 +211,10 @@
                                                           <td>{{line.code}}</td>
                                                           <td>{{line.discount}}</td>
                                                         </tr>
-                                                      
+
                                                       </tbody>
                                                     </table>
-                                                    
+
                                                 </div>
 
                                             </div>
@@ -356,7 +356,7 @@
                                     </div>
 
 
-                               
+
 
                                 </tr>
 
@@ -572,7 +572,7 @@
                                                     <td></td>
                                                     <th>Shipping Cost (+)</th>
                                                     <td>{{postOrderData.shipping_lines[0].total}} Tk</td>
-                                                   
+
                                                 </tr>
                                                 <tr>
                                                     <td></td>
@@ -583,7 +583,7 @@
                                                     <td></td>
                                                     <th>Discount Total (-)</th>
                                                     <td>{{parseInt(fixedDiscount)+parseInt(percentDiscount)}} Tk</td>
-                                                   
+
                                                 </tr>
                                                 <tr>
                                                     <td></td>
@@ -594,7 +594,7 @@
                                                     <td></td>
                                                     <th>Grand Total</th>
                                                     <td>{{parseInt(subTotal)+parseInt(postOrderData.shipping_lines[0].total)-parseInt(fixedDiscount)-parseInt(percentDiscount)}} Tk</td>
-                                                   
+
                                                 </tr>
                                                 </tfoot>
                                             </table>
@@ -628,17 +628,8 @@
     import moment from 'moment';
     import vSelect from "vue-select";
     import _ from 'lodash';
-    import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
     import Pagination from 'vue-pagination-2';
     import Datepicker from 'vuejs-datepicker';
-
-
-    const diniApi = new WooCommerceRestApi({
-        url: "https://dini.com.bd",
-        consumerKey: "ck_5ad6f72002ba15d858f1d1d1b720875989a94a19",
-        consumerSecret: "cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31",
-        version: "wc/v3"
-    });
 
 
     export default {
@@ -650,7 +641,7 @@
         },
         data () {
             return {
-                
+
                 orders: [],
                 postOrderData: {
                     payment_method: '',
@@ -695,7 +686,7 @@
                 variationSelect: false,
                 options2: [],
                 variation_info: '',
-                
+
 
                 page: 1,
                 records: 0,
@@ -719,6 +710,7 @@
                 selectedAction: '',
 
                 localUrl: window.location.origin,
+
 
 
             }
@@ -811,7 +803,7 @@
 
                 diniApi.get("orders?after="+start+"T00:00:00&before="+end+"T00:00:00&page="+this.dateWisePage+"&per_page=100")
                     .then((response) => {
-    
+
                         if(response.data.length){
 
                             this.orders = this.orders.concat(response.data);
@@ -828,7 +820,7 @@
             },
 
             orderSearch(event){
-                
+
                   this.orders = [];
                   this.pageinateShow = false;
 
@@ -846,7 +838,7 @@
 
             },
 
-           
+
 
             newModal(){
                     this.refreshPostOrderData();
@@ -867,12 +859,12 @@
                     .then((response) => {
 
                       this.orderNotes = response.data;
-                        
+
                     })
                     .catch((error) => {
                       console.log(error);
                     })
-                
+
                 $('#notes'+id).modal('show');
             },
 
@@ -914,7 +906,7 @@
             search: _.debounce((loading, search, vm) => {
 
                 fetch(
-                    `https://dini.com.bd/wp-json/wc/v3/products?search=${escape(search)}&consumer_key=ck_5ad6f72002ba15d858f1d1d1b720875989a94a19&consumer_secret=cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31`
+                    process.env.MIX_WC_URL+`/wp-json/`+process.env.MIX_WC_VERSION+`/products?search=${escape(search)}&consumer_key=`+process.env.MIX_WC_CONSUMER_KEY+`&consumer_secret=`+process.env.MIX_WC_CONSUMER_SECRET
                 ).then(res => {
                     res.json().then(json => (vm.options = json));
                     loading(false);
@@ -937,7 +929,7 @@
             search1: _.debounce((loading, search, vm) => {
 
                 fetch(
-                    `https://dini.com.bd/wp-json/wc/v3/products?sku=${escape(search)}&consumer_key=ck_5ad6f72002ba15d858f1d1d1b720875989a94a19&consumer_secret=cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31`
+                    process.env.MIX_WC_URL+`/wp-json/`+process.env.MIX_WC_VERSION+`/products?search=${escape(search)}&consumer_key=`+process.env.MIX_WC_CONSUMER_KEY+`&consumer_secret=`+process.env.MIX_WC_CONSUMER_SECRET
                 ).then(res => {
                     res.json().then(json => (vm.options = json));
                     loading(false);
@@ -990,7 +982,7 @@
 
                     this.result1['quantity'] = this.addQuantity;
                     this.result1['variation_id'] = this.variation_id;
-                    
+
                     this.productsData.push(this.result1);
 
                     this.result1 = [];
@@ -1021,7 +1013,7 @@
 
             removeProduct(index){
                 this.productsData.splice(index, 1);
-                
+
                 this.result1 = [];
                 this.addQuantity = 1;
                 this.variation_id = 0;
@@ -1031,7 +1023,7 @@
                 this.variation_info= '';
             },
 
-            
+
             createOrder(){
 
                 this.paymentDataPass;
@@ -1160,9 +1152,9 @@
                                             title: 'Some error occured! Please try again'
                                         });
                                     });
-                      
 
-                       
+
+
                     }else{
                          Toast.fire({
                                 icon: 'error',
@@ -1170,7 +1162,7 @@
                             });
                     }
 
-                    
+
             },
 
 
@@ -1516,7 +1508,7 @@
             },
 
             updateShippingTitles(event, order){
-                
+
 
 
                 // Update status payment method
@@ -1524,7 +1516,7 @@
                 this.$Progress.start();
                 diniApi.put(updateUrl,{
                     shipping_lines: [
-                        {  
+                        {
                             id: order.shipping_lines[0].id,
                             method_id: event.target.value,
                             method_title: event.target.value,
@@ -1605,7 +1597,7 @@
                 this.$Progress.start();
                 diniApi.put(updateUrl,{
                     shipping_lines: [
-                        {  
+                        {
                             id: order.shipping_lines[0].id,
                             total: event.target.value,
                         }
@@ -1728,7 +1720,7 @@
                                     });
                                 });
 
-                       
+
 
                         } else {
                             console.log("Update else Error");
@@ -1754,7 +1746,7 @@
             },
 
             updateDiscount(event, order){
-                   
+
                    let perDis = 0;
                    let products = {
                     line_items: [],
@@ -1762,8 +1754,8 @@
 
                    let product = '';
 
-                   perDis = parseInt(event.target.value) / order.line_items.length; 
-                   
+                   perDis = parseInt(event.target.value) / order.line_items.length;
+
 
                    $.each(order.line_items, function(key, value) {
 
@@ -1775,9 +1767,9 @@
                             total: newTotal.toString(),
                         };
 
-                    
+
                    products.line_items.push(product);
-                    
+
                     });
 
                    console.log(products);
@@ -1827,7 +1819,7 @@
                                     });
                                 });
 
-                       
+
 
                         } else {
                             console.log("Update else Error");
@@ -1855,7 +1847,7 @@
             },
 
             productAddUpdate(order_id){
-                    
+
 
                     if(this.result1.id){
                         let sendData = "";
@@ -1863,7 +1855,7 @@
                         if(this.variation_id > 0){
                             sendData = {
                                             line_items: [
-                                                {  
+                                                {
                                                     product_id: this.result1.id,
                                                     variation_id: this.variation_id,
                                                     quantity: this.addQuantity,
@@ -1874,7 +1866,7 @@
                         }else{
                              sendData = {
                                             line_items: [
-                                                {  
+                                                {
                                                    product_id: this.result1.id,
                                                    quantity: this.addQuantity,
                                                 }
@@ -1961,7 +1953,7 @@
                                 title: 'Please select product'
                             });
 
-                        
+
                             this.refreshPostOrderData();
 
                     }
@@ -1970,13 +1962,13 @@
             },
 
             productDeleteUpdate(order_info, detail_info){
-                   
+
                                 // Delete product
                     var updateUrl = "orders/"+order_info.id;
                     this.$Progress.start();
                     diniApi.put(updateUrl,{
                         line_items: [
-                                      {  
+                                      {
                                         id: detail_info.id,
                                         quantity: 0,
                                        }
@@ -2061,10 +2053,10 @@
             },
 
             multiActions(){
-                
+
                 if(this.selectedRow.length > 0){
                     console.log(this.selectedAction);
-                   let multiPost = {}; 
+                   let multiPost = {};
 
                    let noteData = "";
 
@@ -2075,7 +2067,7 @@
                     if(this.selectedAction == "processing"){
 
                     multiPost = {update: []};
-                    
+
                     noteData = "Batch Order status update to processing by";
 
                     $.each(selectedRowData, function(key, value) {
@@ -2092,7 +2084,7 @@
                     if(this.selectedAction == "on-hold"){
 
                     multiPost = {update: []};
-                    
+
                     noteData = "Batch Order status update to on hold by";
 
                     $.each(selectedRowData, function(key, value) {
@@ -2108,7 +2100,7 @@
                     if(this.selectedAction == "confirmed"){
 
                     multiPost = {update: []};
-                    
+
                     noteData = "Batch Order status update to confirmed by";
 
                     $.each(selectedRowData, function(key, value) {
@@ -2125,7 +2117,7 @@
                     if(this.selectedAction == "shipping"){
 
                     multiPost = {update: []};
-                    
+
                     noteData = "Batch Order status update to shipping by";
 
                     $.each(selectedRowData, function(key, value) {
@@ -2141,7 +2133,7 @@
                     if(this.selectedAction == "delivered"){
 
                     multiPost = {update: []};
-                    
+
                     noteData = "Batch Order status update to delivered by";
 
                     $.each(selectedRowData, function(key, value) {
@@ -2157,7 +2149,7 @@
                     if(this.selectedAction == "return"){
 
                     multiPost = {update: []};
-                    
+
                     noteData = "Batch Order status update to return by";
 
                     $.each(selectedRowData, function(key, value) {
@@ -2173,7 +2165,7 @@
                     if(this.selectedAction == "shipping-hold"){
 
                     multiPost = {update: []};
-                    
+
                     noteData = "Batch Order status update to shipping-hold by";
 
                     $.each(selectedRowData, function(key, value) {
@@ -2190,7 +2182,7 @@
                     if(this.selectedAction == "completed"){
 
                     multiPost = {update: []};
-                    
+
                     noteData = "Batch Order status update to completed by";
 
                     $.each(selectedRowData, function(key, value) {
@@ -2206,7 +2198,7 @@
                     if(this.selectedAction == "cancelled"){
 
                     multiPost = {update: []};
-                    
+
                     noteData = "Batch Order status update to cancelled by";
 
                     $.each(selectedRowData, function(key, value) {
@@ -2226,7 +2218,7 @@
 
 
                     // console.log(multiPost);
-               
+
                 this.$Progress.start();
                 diniApi.post("orders/batch",multiPost)
                     .then((response)=>{
@@ -2248,10 +2240,10 @@
                                             title: 'Some error occured! Please try again'
                                         });
                                     });
-                       
+
                           });
 
-                       
+
 
                         Toast.fire({
                                             icon: 'success',
@@ -2260,7 +2252,7 @@
                         this.getWebOrders();
                         this.refreshPostOrderData();
                         this.$Progress.finish();
-                    
+
                     })
                     .catch((error)=>{
 
@@ -2276,7 +2268,7 @@
                         this.$Progress.failed();
                     });
 
-                   
+
 
 
                 }else{
@@ -2286,7 +2278,7 @@
                         });
                 }
 
-                
+
 
             },
 
@@ -2308,7 +2300,7 @@
 
         },
         mounted() {
-
+            console.log(process.env.MIX_WC_URL);
         },
         created() {
             this.$Progress.start();
@@ -2390,12 +2382,12 @@
                              Vue.set(product, 'variation_id', value.variation_id);
                         }
 
-                          productAdd.push(product);  
+                          productAdd.push(product);
                     });
 
                    this.postOrderData.line_items = productAdd;
                 }
-                
+
             }
 
 

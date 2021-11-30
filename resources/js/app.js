@@ -32,12 +32,24 @@ const Toast = Swal.mixin({
 window.Swal = Swal;
 window.Toast = Toast;
 
+import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
+
+const diniApi = new WooCommerceRestApi({
+    url: process.env.MIX_WC_URL,
+    consumerKey: process.env.MIX_WC_CONSUMER_KEY,
+    consumerSecret: process.env.MIX_WC_CONSUMER_SECRET,
+    version: process.env.MIX_WC_VERSION
+});
+
+window.diniApi = diniApi;
+
 import VueProgressBar from 'vue-progressbar'
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
     failedColor: 'red',
     height: '3px'
   });
+
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
