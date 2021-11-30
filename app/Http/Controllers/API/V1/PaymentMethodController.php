@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 
-class PaymentMethodController extends Controller
+class PaymentMethodController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -37,7 +37,23 @@ class PaymentMethodController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $this->validate($request, [
+                'pay_name' => 'required',
+                'method' => 'required',
+
+            ]);
+
+
+
+        $request_add = PaymentMethod::create([
+
+            'pay_name' =>request('pay_name'),
+            'method' =>request('method')
+
+        ]);
+
+        return $this->sendResponse($request_add, 'Payment Method Created Successfully');
+
     }
 
     /**
@@ -71,7 +87,19 @@ class PaymentMethodController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'pay_name' => 'required',
+            'method' => 'required',
+
+        ]);
+
+        $request_update = PaymentMethod::findOrFail($id);
+
+        $request_update->update($request->all());
+
+
+        return $this->sendResponse($request_update, 'Payment Method Updated Successfully');
+
     }
 
     /**
@@ -82,6 +110,11 @@ class PaymentMethodController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $request_delete = PaymentMethod::findOrFail($id);
+
+        $request_delete->delete();
+
+        return $this->sendResponse($request_delete, 'Method has been Deleted');
     }
 }

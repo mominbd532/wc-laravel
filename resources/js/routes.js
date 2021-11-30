@@ -8,5 +8,7 @@ export default [
     { path: '/product/category', component: require('./components/product/Category.vue').default },
     { path: '*', component: require('./components/NotFound.vue').default },
     { path: '/orders', component: require('./components/order/Orders.vue').default },
-    { path: '/web-orders', component: require('./components/order/WebOrders.vue').default }
+    { path: '/web-orders', component: require('./components/order/WebOrders.vue').default },
+    { path: '/payment-methods', component: require('./components/order/PaymentMethods.vue').default },
+    { path: '/shipping-titles', component: require('./components/order/ShippingTitles.vue').default }
 ];

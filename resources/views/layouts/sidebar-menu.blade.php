@@ -76,6 +76,22 @@
               </p>
             </router-link>
           </li>
+            <li class="nav-item">
+                <router-link to="/payment-methods" class="nav-link">
+                    <i class="nav-icon fas fa-list-ol green"></i>
+                    <p>
+                        Payment Methods
+                    </p>
+                </router-link>
+            </li>
+            <li class="nav-item">
+                <router-link to="/shipping-titles" class="nav-link">
+                    <i class="nav-icon fas fa-list-ol green"></i>
+                    <p>
+                        Shipping Titles
+                    </p>
+                </router-link>
+            </li>
           <li class="nav-item">
             <router-link to="/product/tag" class="nav-link">
               <i class="nav-icon fas fa-tags green"></i>
