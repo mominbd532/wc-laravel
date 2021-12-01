@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ShippingTitle;
 use Illuminate\Http\Request;
 
-class ShippingController extends Controller
+class ShippingController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -37,7 +37,21 @@ class ShippingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'ship_title' => 'required'
+
+        ]);
+
+
+
+        $request_add = ShippingTitle::create([
+
+            'ship_title' =>request('ship_title')
+
+        ]);
+
+        return $this->sendResponse($request_add, 'Shipping Titles Created Successfully');
+
     }
 
     /**
@@ -71,7 +85,17 @@ class ShippingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'ship_title' => 'required'
+
+        ]);
+
+        $request_update = ShippingTitle::findOrFail($id);
+
+        $request_update->update($request->all());
+
+
+        return $this->sendResponse($request_update, 'Shipping Titles Updated Successfully');
     }
 
     /**
@@ -82,6 +106,10 @@ class ShippingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $request_delete = ShippingTitle::findOrFail($id);
+
+        $request_delete->delete();
+
+        return $this->sendResponse($request_delete, 'Titles has been Deleted');
     }
 }
