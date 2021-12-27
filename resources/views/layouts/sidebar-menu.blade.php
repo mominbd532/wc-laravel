@@ -9,14 +9,14 @@
         </router-link>
       </li>
 
-      <li class="nav-item">
-        <router-link to="/products" class="nav-link">
-          <i class="nav-icon fas fa-list orange"></i>
-          <p>
-            Product
-          </p>
-        </router-link>
-      </li>
+      {{--<li class="nav-item">--}}
+        {{--<router-link to="/products" class="nav-link">--}}
+          {{--<i class="nav-icon fas fa-list orange"></i>--}}
+          {{--<p>--}}
+            {{--Product--}}
+          {{--</p>--}}
+        {{--</router-link>--}}
+      {{--</li>--}}
 
         <li class="nav-item">
             <router-link to="/orders" class="nav-link">
@@ -36,14 +36,14 @@
             </router-link>
         </li>
 
-        <li class="nav-item">
-            <router-link to="/reports" class="nav-link">
-                <i class="nav-icon fas fa-list orange"></i>
-                <p>
-                    Reports
-                </p>
-            </router-link>
-        </li>
+        {{--<li class="nav-item">--}}
+            {{--<router-link to="/reports" class="nav-link">--}}
+                {{--<i class="nav-icon fas fa-list orange"></i>--}}
+                {{--<p>--}}
+                    {{--Reports--}}
+                {{--</p>--}}
+            {{--</router-link>--}}
+        {{--</li>--}}
 
 
     @can('isAdmin')
@@ -68,14 +68,14 @@
         </a>
         <ul class="nav nav-treeview">
 
-          <li class="nav-item">
-            <router-link to="/product/category" class="nav-link">
-              <i class="nav-icon fas fa-list-ol green"></i>
-              <p>
-                Category
-              </p>
-            </router-link>
-          </li>
+          {{--<li class="nav-item">--}}
+            {{--<router-link to="/product/category" class="nav-link">--}}
+              {{--<i class="nav-icon fas fa-list-ol green"></i>--}}
+              {{--<p>--}}
+                {{--Category--}}
+              {{--</p>--}}
+            {{--</router-link>--}}
+          {{--</li>--}}
             <li class="nav-item">
                 <router-link to="/payment-methods" class="nav-link">
                     <i class="nav-icon fas fa-list-ol green"></i>
@@ -92,23 +92,23 @@
                     </p>
                 </router-link>
             </li>
-          <li class="nav-item">
-            <router-link to="/product/tag" class="nav-link">
-              <i class="nav-icon fas fa-tags green"></i>
-              <p>
-                Tags
-              </p>
-            </router-link>
-          </li>
+          {{--<li class="nav-item">--}}
+            {{--<router-link to="/product/tag" class="nav-link">--}}
+              {{--<i class="nav-icon fas fa-tags green"></i>--}}
+              {{--<p>--}}
+                {{--Tags--}}
+              {{--</p>--}}
+            {{--</router-link>--}}
+          {{--</li>--}}
 
-            <li class="nav-item">
-              <router-link to="/developer" class="nav-link">
-                  <i class="nav-icon fas fa-cogs white"></i>
-                  <p>
-                      Developer
-                  </p>
-              </router-link>
-            </li>
+            {{--<li class="nav-item">--}}
+              {{--<router-link to="/developer" class="nav-link">--}}
+                  {{--<i class="nav-icon fas fa-cogs white"></i>--}}
+                  {{--<p>--}}
+                      {{--Developer--}}
+                  {{--</p>--}}
+              {{--</router-link>--}}
+            {{--</li>--}}
         </ul>
       </li>
 

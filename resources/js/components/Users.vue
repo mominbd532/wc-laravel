@@ -111,7 +111,6 @@
                                 <option value="">Select User Role</option>
                                 <option value="admin">Admin</option>
                                 <option value="user">Standard User</option>
-                                <option value="user">Standard User</option>
                                 <option value="communication">Communication</option>
                                 <option value="distributor">Distributor</option>
                                 <option value="accounts">Accounts</option>

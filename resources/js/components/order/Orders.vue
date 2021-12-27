@@ -5,11 +5,11 @@
                 <div class="col-9">
                     <form class="form-inline">
                         <label class="mr-2">From Date: </label>
-                        <datepicker v-model="start_date" name="start_date"  bootstrap-styling="true" class="mr-2" :disabledDates="state.disabledDates"></datepicker>
+                        <datepicker v-model="start_date" name="start_date"  :bootstrap-styling="true" class="mr-2" :disabledDates="state.disabledDates"></datepicker>
 
 
                         <label class="mr-2">To Date: </label>
-                        <datepicker v-model="end_date" name="end_date"  bootstrap-styling="true"  class="mr-2" :disabledDates="state.disabledDates"></datepicker>
+                        <datepicker v-model="end_date" name="end_date"  :bootstrap-styling="true"  class="mr-2" :disabledDates="state.disabledDates"></datepicker>
 
                         <button type="button" class="btn btn-primary" @click="dateWiseOrder">Submit</button>
                     </form>
@@ -49,30 +49,30 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body  p-0">
-                            <div class="table-responsive text-nowrap">
-                                <table class="table b-table table-hover" data-sticky-header="true">
-                                    <thead>
+                            <div class="mytable">
+                                <table class="table table-hover">
+                                    <thead style="position: sticky; top: 0" class="thead-dark">
                                     <tr>
 
-                                        <th style="width: 200px;"><input type="checkbox"></th>
-                                        <th style="width: 200px;">Id</th>
-                                        <th style="width: 200px;">Date <button class="btn btn-sm float-right" @click="shoringOrders('date')"><i class="fa" :class="ascending && shortingType=='date' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
-                                        <th style="width: 200px;">Name <button class="btn btn-sm float-right" @click="shoringOrders('name')"><i class="fa" :class="ascending && shortingType=='name' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
-                                        <th style="width: 200px;">Address <button class="btn btn-sm float-right"  @click="shoringOrders('address')"><i class="fa" :class="ascending && shortingType=='address' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
-                                        <th style="width: 200px;">Phone <button class="btn btn-sm float-right"><i class="fa fa-chevron-down"></i></button></th>
-                                        <th style="width: 200px;">Products </th>
-                                        <th style="width: 200px;">Pay Method <button class="btn btn-sm float-right"  @click="shoringOrders('payment_method')"><i class="fa" :class="ascending && shortingType=='payment_method' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
-                                        <th style="width: 200px;">Sub Total </th>
-                                        <th style="width: 200px;">Fixed Disc </th>
-                                        <th style="width: 200px;">% Discount </th>
-                                        <th style="width: 200px;">Shipping Titles <button class="btn btn-sm float-right" @click="shoringOrders('shipping_title')"><i class="fa" :class="ascending && shortingType=='shipping_title' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
-                                        <th style="width: 200px;">Shipping Cost </th>
-                                        <th style="width: 200px;">Grand Total </th>
-                                        <th style="width: 200px;">Order Status <button class="btn btn-sm float-right" @click="shoringOrders('status')"><i class="fa" :class="ascending && shortingType=='status' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
-                                        <th style="width: 200px;">Notes</th>
-                                        <th style="width: 200px;">User</th>
-                                        <th style="width: 200px;">Txn Number</th>
-                                        <th style="width: 200px;">Txn Id</th>
+                                        <th class="header"><input type="checkbox"></th>
+                                        <th class="header">Id</th>
+                                        <th class="header">Date <button class="btn btn-sm float-right" @click="shoringOrders('date')"><i class="fa" :class="ascending && shortingType=='date' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th class="header">Name <button class="btn btn-sm float-right" @click="shoringOrders('name')"><i class="fa" :class="ascending && shortingType=='name' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th class="header">Address <button class="btn btn-sm float-right"  @click="shoringOrders('address')"><i class="fa" :class="ascending && shortingType=='address' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th class="header">Phone <button class="btn btn-sm float-right"><i class="fa fa-chevron-down"></i></button></th>
+                                        <th class="header">Products </th>
+                                        <th class="header">Pay Method <button class="btn btn-sm float-right"  @click="shoringOrders('payment_method')"><i class="fa" :class="ascending && shortingType=='payment_method' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th class="header">Sub Total </th>
+                                        <th class="header">Fixed Disc </th>
+                                        <th class="header">% Discount </th>
+                                        <th class="header">Shipping Titles <button class="btn btn-sm float-right" @click="shoringOrders('shipping_title')"><i class="fa" :class="ascending && shortingType=='shipping_title' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th class="header">Shipping Cost </th>
+                                        <th class="header">Grand Total </th>
+                                        <th class="header">Order Status <button class="btn btn-sm float-right" @click="shoringOrders('status')"><i class="fa" :class="ascending && shortingType=='status' ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button></th>
+                                        <th class="header">Notes</th>
+                                        <th class="header">User</th>
+                                        <th class="header">Txn Number</th>
+                                        <th class="header">Txn Id</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -80,16 +80,16 @@
                                         <td><input type="checkbox"></td>
                                         <td>{{order.id}}</td>
                                         <td >
-                                            <p class="text-wrap" style="width: 100px;"> {{diniDateTime(order.created_at)}}</p>
+                                            <p style="display: flex; width: 160px"> {{diniDateTime(order.created_at)}}</p>
                                         </td>
                                         <td >
                                         <textarea  name="name"
-                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('name') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'" style="width: 120px;">{{order.name}}</textarea>
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('name') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'" style="width: 200px;">{{order.name}}</textarea>
                                             <has-error :form="form" field="name" ></has-error>
                                         </td>
                                         <td >
                                         <textarea  name="address"
-                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('address') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'" style="width: 120px;">{{order.address}}</textarea>
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('address') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'" style="width: 200px;">{{order.address}}</textarea>
 
                                             <has-error :form="form" field="address" ></has-error>
                                         </td>
@@ -103,7 +103,7 @@
                                             <button type="button" class="btn btn-primary" @click="newModal1(order.id)">Products</button>
                                         </td>
                                         <td >
-                                            <select class="form-control" name="payment_method" @change="updateOrder($event, order.id)"  :disabled="order.status == 'pre-cancel'">
+                                            <select class="form-control" name="payment_method" @change="updateOrder($event, order.id)"  :disabled="order.status == 'pre-cancel'" style="width: 160px;">
                                                 <option
                                                     v-for="(payment,index) in paymentMethods" :key="index"
                                                     :value="payment.method" :selected="order.payment_method == payment.method">{{payment.pay_name}}</option>
@@ -112,19 +112,19 @@
                                         </td>
 
 
-                                        <td >{{subTotalList(order.order_details)}} TK</td>
+                                        <td style="display: table; vertical-align: middle !important;">{{subTotalList(order.order_details)}} TK</td>
                                         <td>
                                             <input :value="order.discount" type="number" name="discount"
-                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('discount') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('discount') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'" style="width: 100px;">
                                             <has-error :form="form" field="discount" ></has-error>
                                         </td>
                                         <td>
                                             <input :value="order.discount_percent" type="number" name="discount_percent"
-                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('discount_percent') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('discount_percent') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'" style="width: 100px;">
                                             <has-error :form="form" field="discount_percent" ></has-error>
                                         </td>
                                         <td >
-                                            <select class="form-control" name="shipping_title" @change="updateOrder($event, order.id)"  :disabled="order.status == 'pre-cancel'">
+                                            <select class="form-control" name="shipping_title" @change="updateOrder($event, order.id)"  :disabled="order.status == 'pre-cancel'" style="width: 200px;">
                                                 <option
                                                     v-for="(ship,index) in shippings" :key="index"
                                                     :value="ship.ship_title" :selected="order.shipping_title == ship.ship_title">{{ship.ship_title}}</option>
@@ -133,14 +133,14 @@
                                         </td>
                                         <td>
                                             <input :value="order.shipping_cost" type="number" name="shipping_cost"
-                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('shipping_cost') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
+                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('shipping_cost') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'" style="width: 100px;">
                                             <has-error :form="form" field="shipping_cost" ></has-error>
                                         </td>
 
-                                        <td >{{grandTotalList(order)}} TK</td>
+                                        <td style="display: table; vertical-align: middle !important;">{{grandTotalList(order)}} TK</td>
 
                                         <td>
-                                            <select  class="form-control" name="status" @change="postOrder($event,order.id)" >
+                                            <select  class="form-control" name="status" @change="postOrder($event,order.id)" style="width: 200px;">
                                                 <option value="" selected> Please Select a option</option>
                                                 <option v-if="order.status == 'new'" value="confirm" >Confirm</option>
                                                 <option v-if="order.status == 'new'" value="pre-cancel" >Pre-Cancel</option>
@@ -152,7 +152,7 @@
                                                       class="form-control" :class="{ 'is-invalid': form.errors.has('note') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'"  style="width: 200px;">{{order.note}}</textarea>
                                             <has-error :form="form" field="note" ></has-error>
                                         </td>
-                                        <td>{{order.user}}</td>
+                                        <td><p style="display: flex; width: 150px;">{{order.user}}</p></td>
                                         <td>
                                             <input :value="order.txn_num" type="text" name="txn_num"
                                                    class="form-control" :class="{ 'is-invalid': form.errors.has('txn_num') }"  @change="updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
@@ -301,7 +301,7 @@
 
                                     </tr>
 
-                                    <tr v-if="!filterOrders.length">
+                                    <tr v-if="filterOrders && filterOrders.length < 1">
                                         <td colspan="19">
                                             <div style="text-align: center;"><p>No data found</p></div>
                                         </td>
@@ -600,7 +600,7 @@
         data () {
             return {
                 editmode: false,
-                orders: [],
+                orders: {},
                 form: new Form({
                     id : '',
                     shipping_date : '',
@@ -698,8 +698,6 @@
                 shortingType: null,
                 ascending: false,
                 tableSearch: null,
-
-
             }
         },
         methods: {
@@ -1468,9 +1466,9 @@
             this.$Progress.finish();
         },
         filters: {
-            truncate: function (text, length, suffix) {
-                return text.substring(0, length) + suffix;
-            },
+            // truncate: function (text, length, suffix) {
+            //     return text.substring(0, length) + suffix;
+            // },
         },
         computed: {
             filteredItems() {
@@ -1502,7 +1500,8 @@
             },
 
             filterOrders: function () {
-                let orders  =this.orders.data;
+
+                let orders  = this.orders.data;
                 let searchQuery =this.tableSearch;
                 let shortType = this.shortingType;
 
@@ -1660,7 +1659,15 @@
 
 <style scoped>
 
+    .header {
+        position: sticky;
+        top:0;
+    }
 
+    .mytable {
+        height: 600px;
+        overflow: auto;
+    }
 
 
 </style>

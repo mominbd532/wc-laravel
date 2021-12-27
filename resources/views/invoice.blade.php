@@ -1,16 +1,19 @@
 <?php
 
 use Automattic\WooCommerce\Client;
-
+$my_site_url = env('MIX_WC_URL');
+$my_site_ck = env('MIX_WC_CONSUMER_KEY');
+$my_site_cs = env('MIX_WC_CONSUMER_SECRET');
+$my_site_version = env('MIX_WC_VERSION');
          $woocommerce = new Client(
-                                    'https://dini.com.bd',
-                                    'ck_5ad6f72002ba15d858f1d1d1b720875989a94a19',
-                                    'cs_bfc7759a20e7b290e5245efb3acf049a94ee3f31',
-                                    [
-                                        'wp_api' => true,
-                                        'version' => 'wc/v3'
-                                    ]
-                                );
+             $my_site_url,
+             $my_site_ck,
+             $my_site_cs,
+			 [
+			     'wp_api' => true,
+				 'version' => $my_site_version
+			 ]
+		 );
 
          $order =$woocommerce->get('orders/'.$id);
 
@@ -28,13 +31,11 @@ use Automattic\WooCommerce\Client;
 <table class="head container">
 	<tr>
 		<td class="header">
-		<img src="{{asset('/images/invoice/logo.png')}}" alt="Dini" />		
+		<img src="{{asset('logo1.png')}}" alt="{{env('APP_NAME')}}" />
 	    </td>
 		<td class="shop-info">
-			<div class="shop-name"><h3>Dini</h3></div>
-			<div class="shop-address"><p>260 Malibag (3rd Floor), Dhaka-1217 Bangladesh<br />
-Cell: +8801313-862211</p>
-</div>
+			<div class="shop-name"><h3>{{env('MY_SHOP_TITLE')}}</h3></div>
+			<div class="shop-address"><p>{{env('MY_SHOP_ADDRESS')}}</p></div>
 		</td>
 	</tr>
 </table>
@@ -49,7 +50,7 @@ Invoice</h1>
             <div><h3>Billing Info:</h3></div>
 			<!-- <h3>Billing Address:</h3> -->
 						{{$order->billing->first_name}}&nbsp;{{$order->billing->last_name}}<br/>
-						{{$order->billing->address_1}}&nbsp;{{$order->billing->city}}&nbsp;{{$order->billing->state}}&nbsp;{{$order->billing->postcode}}						   
+						{{$order->billing->address_1}}&nbsp;{{$order->billing->city}}&nbsp;{{$order->billing->state}}&nbsp;{{$order->billing->postcode}}
 						<div class="billing-email">{{$order->billing->email}}</div>
 						<div class="billing-phone">{{$order->billing->phone}}</div>
 					</td>
@@ -89,7 +90,7 @@ Invoice</h1>
 					<th>Payment Method:</th>
 					<td>{{$order->payment_method_title}}</td>
 				</tr>
-			</table>			
+			</table>
 		</td>
 	</tr>
 </table>
@@ -110,17 +111,17 @@ Invoice</h1>
 
 		<?php $subTotal = 0;?>
 		@foreach($order->line_items as $key=>$item)
-		     
+
 		    <tr class="1626">
 
-		    	<?php 
+		    	<?php
 		    	if($item->variation_id > 0){
 		    		$product =$woocommerce->get('products/'.$item->variation_id);
 		    	}else{
 		    		$product =$woocommerce->get('products/'.$item->product_id);
 		    	}
 		    	 ?>
-		    	
+
 
             <td class="sl">{{$key+1}}</td>
             <td class="p_image"><img width="100" height="100" src="{{$product->images[0]->src}}"  alt="" /></td>
@@ -129,7 +130,7 @@ Invoice</h1>
                                {{-- Publication: Darussalam Publishers --}}
 
             </td>
-			
+
             <td class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#2547;&nbsp;</span>{{$item->subtotal/$item->quantity}}</bdi></span></td>
             <td class="quantity">{{$item->quantity}}</td>
 			<td class="total"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#2547;&nbsp;</span>{{$item->subtotal}}</bdi></span></td>
@@ -137,7 +138,7 @@ Invoice</h1>
 
 		     <?php $subTotal = $subTotal+$item->subtotal;?>
 
-		     
+
 
 		     @endforeach
 
@@ -147,7 +148,7 @@ Invoice</h1>
 
 			</tbody>
 	<tfoot>
-		
+
 	</tfoot>
 </table>
 <table class="dini_total">
@@ -155,18 +156,18 @@ Invoice</h1>
 	<tr class="no-borders">
 			<td class="no-borders" style="width: 70%;">
 				<div class="customer-notes">
-					 
+
 					@if($order->status == "confirmed" && $order->payment_method_title != "Cash on delivery")
 					<img src="{{asset('/images/invoice/paid.png')}}" alt="pais" style="width: 200px;">
 					@endif
-					
+
 
 
 
 				</div>
-															                                        
+
              </td>
-						
+
 			<td class="no-borders" style="width: 30%;" >
 				<table class="totals">
 					<tfoot>
@@ -174,7 +175,7 @@ Invoice</h1>
 							<td class="no-borders"></td>
 							<th class="description">Subtotal</th>
 							<td class="prices"><span class="totals-price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#2547;&nbsp;</span>
-							
+
                              {{$subTotal}}
 						    </bdi></span></span></td>
 						</tr>
@@ -232,8 +233,7 @@ Invoice</h1>
 
 
 <div id="footer">
-	<p>*** These terms and conditions outline the rules and regulations for the use of Dini&#8217;s Website, located at dini.com.bd</p>
-<p>*** By accessing this website we assume you accept these terms and conditions. Do not continue to use Dini if you do not agree to take all of the terms and conditions stated on this page.</p>
+
 </div><!-- #letter-footer -->
 
 

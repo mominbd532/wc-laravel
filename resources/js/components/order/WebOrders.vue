@@ -5,11 +5,11 @@
                 <div class="col-9">
                     <form class="form-inline">
                         <label class="mr-2">From Date: </label>
-                        <datepicker v-model="start_date" name="start_date"  bootstrap-styling="true" class="mr-2" :disabledDates="state.disabledDates"></datepicker>
+                        <datepicker v-model="start_date" name="start_date"  :bootstrap-styling="true" class="mr-2" :disabledDates="state.disabledDates"></datepicker>
 
 
                         <label class="mr-2">To Date: </label>
-                        <datepicker v-model="end_date" name="end_date"  bootstrap-styling="true"  class="mr-2" :disabledDates="state.disabledDates"></datepicker>
+                        <datepicker v-model="end_date" name="end_date"  :bootstrap-styling="true"  class="mr-2" :disabledDates="state.disabledDates"></datepicker>
 
                         <button type="button" class="btn btn-primary" @click="dateWiseOrder">Submit</button>
                     </form>
@@ -55,8 +55,8 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
-                            <table class="table table-hover table-fixed">
-                                <thead>
+                            <table class="table table-hover">
+                                <thead class="sticky-header">
                                 <tr>
                                     <th><label class="form-checkbox"><input type="checkbox" v-model="selectAll" @click="selectALLRow"><i class="form-icon"></i></label></th>
                                     <th>Id</th>
@@ -82,11 +82,12 @@
 
                                 </tr>
                                 </thead>
+
                                 <tbody>
                                 <tr v-for="order in orders" >
                                     <td><input type="checkbox" :value="order" v-model="selectedRow"></td>
                                     <td><a href="#" @click="productModal(order.id)">{{order.id}}</a></td>
-                                    <td>{{order.date_created}}</td>
+                                    <td>{{diniDateTime(order.date_created)}}</td>
                                     <td>{{order.created_via}}</td>
                                     <td><a href="#" @click="genaratePDF(order.id)"><span v-for="meta_info in order.meta_data" v-if="meta_info.key == '_wcpdf_invoice_number'">{{meta_info.value}}</span></a></td>
                                     <td>
@@ -406,17 +407,21 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <label>Name</label>
                                             <input type="text" name="name" class="form-control" v-model="postOrderData.billing.first_name">
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <label>Address</label>
                                             <input type="text" name="address" class="form-control" v-model="postOrderData.billing.address_1" >
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <label>Phone</label>
                                             <input type="text" name="phone" class="form-control" v-model="postOrderData.billing.phone">
+                                        </div>
+                                        <div class="col-3">
+                                            <label>Email</label>
+                                            <input type="text" name="email" class="form-control" v-model="postOrderData.billing.email">
                                         </div>
                                     </div>
 
@@ -651,7 +656,8 @@
                     billing: {
                         first_name: null,
                         address_1: null,
-                        phone: null
+                        phone: null,
+                        email: null
                       },
                     line_items: [],
                     shipping_lines: [
@@ -1173,6 +1179,7 @@
                 this.postOrderData.billing.first_name = "";
                 this.postOrderData.billing.address_1 = "";
                 this.postOrderData.billing.phone ="";
+                this.postOrderData.billing.email ="";
                 this.productsData = [];
                 this.fixedDiscount = 0,
                 this.pcntDiscount = 0,
@@ -1772,7 +1779,7 @@
 
                     });
 
-                   console.log(products);
+                   // console.log(products);
 
                     var updateUrl = "orders/"+order.id;
                 this.$Progress.start();
@@ -2300,7 +2307,7 @@
 
         },
         mounted() {
-            console.log(process.env.MIX_WC_URL);
+           //
         },
         created() {
             this.$Progress.start();
@@ -2390,12 +2397,6 @@
 
             }
 
-
-
-
-
-
-
         },
     }
 </script>
@@ -2408,5 +2409,18 @@
     border-radius: 10px 10px 10px 0px;
     width: 300px;
 }
+
+
+/*.table-hover tbody {*/
+    /*height: 400px;*/
+    /*overflow-y: auto;*/
+    /*width: 100%;*/
+/*}*/
+
+/*.table-hover tbody{*/
+    /*display: block;*/
+/*}*/
+
+
 
 </style>
