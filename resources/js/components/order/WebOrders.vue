@@ -54,316 +54,316 @@
                             </div>
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-hover">
-                                <thead class="sticky-header">
-                                <tr>
-                                    <th><label class="form-checkbox"><input type="checkbox" v-model="selectAll" @click="selectALLRow"><i class="form-icon"></i></label></th>
-                                    <th>Id</th>
-                                    <th>Date</th>
-                                    <th>Order Created Way</th>
-                                    <th>Invoice Number</th>
-                                    <th>Name</th>
-                                    <th>Address</th>
-                                    <th>Phone</th>
-                                    <th>Payment Method</th>
-                                    <th>Sub Total</th>
-                                    <th>Discount</th>
-                                    <th>Shipping Titles</th>
-                                    <th>Shipping Cost</th>
-                                    <th>Grand Total</th>
-                                    <th>Status</th>
-                                    <th>Notes</th>
-                                    <th>Print</th>
-                                    <th>Count</th>
-                                    <th>Txn Number</th>
-                                    <th>Txn Id</th>
-                                    <th>Coupon Id</th>
+                        <div class="card-body p-0">
+                            <div class="mytable">
+                                <table class="table table-hover">
+                                    <thead style="position: sticky; top: 0" class="thead-dark">
+                                    <tr>
+                                        <th class="header"><label class="form-checkbox"><input type="checkbox" v-model="selectAll" @click="selectALLRow"><i class="form-icon"></i></label></th>
+                                        <th class="header">Id</th>
+                                        <th class="header">Date</th>
+                                        <th class="header">Name</th>
+                                        <th class="header">Address</th>
+                                        <th class="header">Phone</th>
+                                        <th class="header">Sub Total</th>
+                                        <th class="header">Discount</th>
+                                        <th class="header">Shipping Titles</th>
+                                        <th class="header">Shipping Cost</th>
+                                        <th class="header">Grand Total</th>
+                                        <th class="header">Payment Method</th>
+                                        <th class="header">Status</th>
+                                        <th class="header">Notes</th>
+                                        <th class="header">Txn Number</th>
+                                        <th class="header">Txn Id</th>
+                                        <th class="header">Coupon Id</th>
+                                        <th class="header">Order Created Way</th>
 
-                                </tr>
-                                </thead>
+                                    </tr>
+                                    </thead>
 
-                                <tbody>
-                                <tr v-for="order in orders" >
-                                    <td><input type="checkbox" :value="order" v-model="selectedRow"></td>
-                                    <td><a href="#" @click="productModal(order.id)">{{order.id}}</a></td>
-                                    <td>{{diniDateTime(order.date_created)}}</td>
-                                    <td>{{order.created_via}}</td>
-                                    <td><a href="#" @click="genaratePDF(order.id)"><span v-for="meta_info in order.meta_data" v-if="meta_info.key == '_wcpdf_invoice_number'">{{meta_info.value}}</span></a></td>
-                                    <td>
-                                        <input :value="order.billing.first_name" type="text" name="name"
-                                               class="form-control" style="width: fit-content;" @change="updateBillingName($event,order.id)">
-                                    </td>
-                                    <td>
-                                        <input :value="order.billing.address_1" type="text" name="address"
-                                               class="form-control" style="width: fit-content;" required="required" @change="updateBillingAddress($event, order.id)">
-                                    </td>
-                                    <td>
-                                        <input :value="order.billing.phone" type="text" name="phone"
-                                               class="form-control" style="width: fit-content;" required="required" @change="updateBillingPhone($event, order.id)">
+                                    <tbody>
+                                    <tr v-for="order in orders">
+                                        <td><input type="checkbox" :value="order" v-model="selectedRow"></td>
+                                        <td><a href="#" @click="productModal(order.id)">{{order.id}}</a></td>
+                                        <td><a href="#" @click="genaratePDF(order.id)" style="display: flex; width: 135px;">{{diniDateTime(order.date_created)}}</a></td>
+                                    
+                                        <td>
+                                            <input :value="order.billing.first_name" type="text" name="name" @change="updateBillingName($event,order.id)"  style="width: 150px" class="form-control">
+                                        </td>
+                                        <td>
+                                            <textarea name="address" required="required" @change="updateBillingAddress($event, order.id)">{{order.billing.address_1}}</textarea>
+                                        </td>
+                                        <td>
+                                            <input :value="order.billing.phone" type="text" name="phone" required="required" @change="updateBillingPhone($event, order.id)" class="form-control" style="width: 140px;">
+                                        </td>
+                                      
 
-                                    </td>
-                                    <td>
-                                        <select class="form-control" name="payment_method" style="width: fit-content;" @change="updatePaymentMethod($event, order.id)">
-                                            <option v-for="(payment,index) in paymentMethods" :key="index" :selected="order.payment_method == payment.method" >{{payment.pay_name}}</option>
-                                        </select>
+                                        <td><p style="white-space: nowrap;">{{parseInt(order.total) + parseInt(order.discount_total) - parseInt(order.shipping_total)}} TK</p></td>
+                                        <td>
+                                            <input :value="order.discount_total" type="number" name="discount" class="form-control" style="width: 100px;" @change="updateDiscount($event, order)">
+                                        </td>
+                                        <td>
+                                            <input v-if="order.shipping_lines.length > 0" :value="order.shipping_lines[0].method_title" type="text" name="shipping_method"
+                                                class="form-control" style="width: fit-content;" @change="updateShippingTitles($event, order)" >
+                                        </td>
+                                        <td>
+                                            <input :value="order.shipping_total" type="number" name="shipping_cost" class="form-control" style="width: 100px;" @change="updateShippingCost($event, order)" >
 
-                                    </td>
+                                        </td>
 
-                                    <td>{{parseInt(order.total) + parseInt(order.discount_total) - parseInt(order.shipping_total)}} TK</td>
-                                    <td>
-                                        <input :value="order.discount_total" type="number" name="discount" class="form-control" style="width: fit-content;" @change="updateDiscount($event, order)">
-                                    </td>
-                                    <td>
-                                        <input v-if="order.shipping_lines.length > 0" :value="order.shipping_lines[0].method_title" type="text" name="shipping_method"
-                                               class="form-control" style="width: fit-content;" @change="updateShippingTitles($event, order)" >
-                                    </td>
-                                    <td>
-                                        <input :value="order.shipping_total" type="number" name="shipping_cost" class="form-control" style="width: fit-content;" @change="updateShippingCost($event, order)" >
+                                        <td><p style="white-space: nowrap;">{{order.total}} TK</p></td>
+                                        <td>
+                                            <select class="form-control" name="payment_method" style="width: fit-content;" @change="updatePaymentMethod($event, order.id)">
+                                                <option v-for="(payment,index) in paymentMethods" :key="index" :selected="order.payment_method == payment.method" >{{payment.pay_name}}</option>
+                                            </select>
 
-                                    </td>
+                                        </td>
 
-                                    <td>{{order.total}} TK</td>
+                                        <td>
+                                            <select class="form-control" name="status" style="width: fit-content;" @change="updateOrderStatus($event, order.id)" >
+                                                <option v-for="(orderStatus,index) in orderStatuses" :key="index" :value="orderStatus.status" :selected="order.status == orderStatus.status" >{{orderStatus.name}}
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-secondary" @click="notesModal(order.id)">Notes</button>
 
-                                    <td>
-                                        <select class="form-control" name="status" style="width: fit-content;" @change="updateOrderStatus($event, order.id)" >
-                                            <option v-for="(orderStatus,index) in orderStatuses" :key="index" :value="orderStatus.status" :selected="order.status == orderStatus.status" >{{orderStatus.name}}
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-secondary" @click="notesModal(order.id)">Notes</button>
+                                        </td>
+                                        <td>
+                                            <input :value="order.txn_num" type="text" name="txn_num"
+                                                class="form-control" style="width: fit-content;" @change="order.order_id ? updateOrderTest($event, order.id, order.order_id) : updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
 
-                                    </td>
-                                    <td><a :href="'https://dini.com.bd/wp-admin/admin-ajax.php?action=generate_wpo_wcpdf&document_type=invoice&order_ids='+order.id+'&_wpnonce=132018b599'" target="_blank"  class="btn btn-primary" >Print</a></td>
-                                    <td></td>
-                                    <td>
-                                        <input :value="order.txn_num" type="text" name="txn_num"
-                                               class="form-control" style="width: fit-content;" @change="order.order_id ? updateOrderTest($event, order.id, order.order_id) : updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
+                                        </td>
+                                        <td>
+                                            <input :value="order.txn_id" type="text" name="txn_id"
+                                                class="form-control"style="width: fit-content;" @change="order.order_id ? updateOrderTest($event, order.id, order.order_id) : updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
 
-                                    </td>
-                                    <td>
-                                        <input :value="order.txn_id" type="text" name="txn_id"
-                                               class="form-control"style="width: fit-content;" @change="order.order_id ? updateOrderTest($event, order.id, order.order_id) : updateOrder($event, order.id)" :readonly="order.status == 'pre-cancel'">
+                                        </td>
+                                        <td>
+                                            <button v-if="order.coupon_lines.length > 0" type="button" class="btn btn-secondary" @click="couponsModal(order.id)">Coupons</button>
 
-                                    </td>
-                                    <td>
-                                        <button v-if="order.coupon_lines.length > 0" type="button" class="btn btn-secondary" @click="couponsModal(order.id)">Coupons</button>
+                                        </td>
 
-                                    </td>
+                                        <td>{{order.created_via}}</td>
 
-                                    <!--Note Modal -->
-                                    <div class="modal fade" :id="`notes${order.id}`" tabindex="-1" role="dialog" aria-labelledby="editProduct" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Notes List for Invoice:
-                                                        <span v-for="meta_info in order.meta_data" v-if="meta_info.key == '_wcpdf_invoice_number'">{{meta_info.value}}</span>
-                                                    </h5>
+                                         <!--Note Modal -->
 
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
+                                          <div class="modal fade" :id="`notes${order.id}`" tabindex="-1" role="dialog" aria-labelledby="editProduct" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Notes List for Invoice:
+                                                            <span v-for="meta_info in order.meta_data" v-if="meta_info.key == '_wcpdf_invoice_number'">{{meta_info.value}}</span>
+                                                        </h5>
 
-                                                    <div class="notes" v-for="noteN in orderNotes">
-                                                        <div class="note_content">
-                                                            <p>
-                                                                {{noteN.note}}
-                                                            </p>
-                                                        </div>
-                                                        <div class="note_date">{{diniDateTime(noteN.date_created)}}</div>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
                                                     </div>
+                                                    <div class="modal-body">
+
+                                                        <div class="notes" v-for="noteN in orderNotes">
+                                                            <div class="note_content">
+                                                                <p>
+                                                                    {{noteN.note}}
+                                                                </p>
+                                                            </div>
+                                                            <div class="note_date">{{diniDateTime(noteN.date_created)}}</div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
+
 
                                             </div>
-
-
                                         </div>
-                                    </div>
 
-                                     <!--Coupon Modal -->
-                                    <div class="modal fade" :id="`coupon${order.id}`" tabindex="-1" role="dialog" aria-labelledby="editProduct" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Coupons List for Invoice:
-                                                        <span v-for="meta_info in order.meta_data" v-if="meta_info.key == '_wcpdf_invoice_number'">{{meta_info.value}}</span>
-                                                    </h5>
+                                        <!--Coupon Modal -->
+                                        <div class="modal fade" :id="`coupon${order.id}`" tabindex="-1" role="dialog" aria-labelledby="editProduct" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Coupons List for Invoice:
+                                                            <span v-for="meta_info in order.meta_data" v-if="meta_info.key == '_wcpdf_invoice_number'">{{meta_info.value}}</span>
+                                                        </h5>
 
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <table class="table">
-                                                      <thead>
-                                                        <tr>
-                                                          <th scope="col">#</th>
-                                                          <th scope="col">Code</th>
-                                                          <th scope="col">Amount</th>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Code</th>
+                                                            <th scope="col">Amount</th>
 
-                                                        </tr>
-                                                      </thead>
-                                                      <tbody>
-                                                        <tr v-for="(line, index) in order.coupon_lines" :key="index">
-                                                          <th scope="row">{{index+1}}</th>
-                                                          <td>{{line.code}}</td>
-                                                          <td>{{line.discount}}</td>
-                                                        </tr>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr v-for="(line, index) in order.coupon_lines" :key="index">
+                                                            <th scope="row">{{index+1}}</th>
+                                                            <td>{{line.code}}</td>
+                                                            <td>{{line.discount}}</td>
+                                                            </tr>
 
-                                                      </tbody>
-                                                    </table>
-
-                                                </div>
-
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-
-                                    <!--Products Modal -->
-                                    <div class="modal fade" :id="`products${order.id}`" tabindex="-1" role="dialog" aria-labelledby="editProduct" aria-hidden="true">
-                                        <div class="modal-dialog modal-xl" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Products List</h5>
-
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <input type="checkbox" id="checkbox1" v-model="checked">
-                                                            <label for="checkbox1">SKU Search</label>
-                                                        </div>
-                                                        <div class="col-5">
-
-                                                            <label for="select1" class="col-8 control-label">
-                                                                Please Add Products
-                                                            </label>
-                                                            <v-select v-if="!checked" label="name" :filterable="false" :options="filterOptions" @search="onSearch" v-model="result1" @input="variationLoad">
-                                                                <template slot="no-options">
-                                                                    type to search by name..
-                                                                </template>
-                                                                <template slot="option" slot-scope="option">
-                                                                    <div class="d-center">
-
-                                                                        {{ option.name}}- {{option.sku}}
-                                                                    </div>
-                                                                </template>
-                                                                <template slot="selected-option" slot-scope="option" >
-                                                                    <div class="selected d-center">
-
-                                                                        {{ option.name }} - {{option.sku}}
-                                                                    </div>
-                                                                </template>
-                                                            </v-select>
-
-                                                            <v-select v-if="checked" label="name" :filterable="false" :options="filterOptions" @search="onSearch1" v-model="result1" @input="variationLoad">
-                                                                <template slot="no-options">
-                                                                    type to search by sku..
-                                                                </template>
-                                                                <template slot="option" slot-scope="option">
-                                                                    <div class="d-center">
-
-                                                                        {{ option.name}}- {{option.sku}}
-                                                                    </div>
-                                                                </template>
-                                                                <template slot="selected-option" slot-scope="option" >
-                                                                    <div class="selected d-center">
-
-                                                                        {{ option.name }} - {{option.sku}}
-                                                                    </div>
-                                                                </template>
-                                                            </v-select>
-
-                                                            <label v-if="variationSelect" for="select1" class="col-8 control-label">
-                                                                Please Select Variation
-                                                            </label>
-
-                                                            <select v-if="variationSelect" v-model="variation_info" @change="changeProductName($event)" style="width: 100%; margin-bottom: 10px">
-                                                                <option v-if="variation.stock_status = 'instock'" v-for="(variation,index) in options2" v-bind:value="{id: variation.id, name: variation.name, sku: variation.sku }">
-                                                                    {{variation.name}} - ({{variation.sku}})
-                                                                </option>
-                                                            </select>
-
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <label>Quantity</label>
-                                                            <input v-model="addQuantity" type="number" name="quantity" class="form-control">
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <button type="button" class="btn btn-success mt-4" @click="productAddUpdate(order.id)">
-                                                                <i class="fas fa-plus"></i>
-                                                            </button>
-
-
-                                                        </div>
+                                                        </tbody>
+                                                        </table>
 
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <table class="table">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th scope="col">#</th>
-                                                                    <th scope="col">Name</th>
-                                                                    <th scope="col">SKU</th>
-                                                                    <th scope="col">Variation</th>
-                                                                    <th scope="col">Price</th>
-                                                                    <th scope="col">Quantity</th>
-                                                                    <th scope="col">Total</th>
-                                                                    <th scope="col">Action</th>
-                                                                </tr>
-                                                                </thead>
 
-                                                                <tbody>
-                                                                <tr v-for="(detail,index) in order.line_items" :key="index">
-                                                                    <th scope="row">{{index+1}}</th>
-                                                                    <td>{{detail.name}}</td>
-                                                                    <td>{{detail.sku}}</td>
-                                                                    <td>{{detail.variation_id}}</td>
-                                                                    <td>
-                                                                        {{parseInt(detail.subtotal)/detail.quantity}}
-                                                                    </td>
-                                                                    <td>
-                                                                        {{detail.quantity}}
-                                                                    </td>
-                                                                    <td>
-                                                                        {{detail.subtotal}}
-                                                                    </td>
-                                                                    <td><button type="button" class="btn btn-danger" @click="productDeleteUpdate(order, detail)">
-                                                                        <i class="fas fa-minus"></i>
-                                                                    </button>
-                                                                    </td>
-                                                                </tr>
-
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-
-                                                    </div>
                                                 </div>
 
+
                                             </div>
-
-
                                         </div>
-                                    </div>
+
+                                        <!--Products Modal -->
+                                        <div class="modal fade" :id="`products${order.id}`" tabindex="-1" role="dialog" aria-labelledby="editProduct" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Products List</h5>
+
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-2">
+                                                                <input type="checkbox" id="checkbox1" v-model="checked">
+                                                                <label for="checkbox1">SKU Search</label>
+                                                            </div>
+                                                            <div class="col-5">
+
+                                                                <label for="select1" class="col-8 control-label">
+                                                                    Please Add Products
+                                                                </label>
+                                                                <v-select v-if="!checked" label="name" :filterable="false" :options="filterOptions" @search="onSearch" v-model="result1" @input="variationLoad">
+                                                                    <template slot="no-options">
+                                                                        type to search by name..
+                                                                    </template>
+                                                                    <template slot="option" slot-scope="option">
+                                                                        <div class="d-center">
+
+                                                                            {{ option.name}}- {{option.sku}}
+                                                                        </div>
+                                                                    </template>
+                                                                    <template slot="selected-option" slot-scope="option" >
+                                                                        <div class="selected d-center">
+
+                                                                            {{ option.name }} - {{option.sku}}
+                                                                        </div>
+                                                                    </template>
+                                                                </v-select>
+
+                                                                <v-select v-if="checked" label="name" :filterable="false" :options="filterOptions" @search="onSearch1" v-model="result1" @input="variationLoad">
+                                                                    <template slot="no-options">
+                                                                        type to search by sku..
+                                                                    </template>
+                                                                    <template slot="option" slot-scope="option">
+                                                                        <div class="d-center">
+
+                                                                            {{ option.name}}- {{option.sku}}
+                                                                        </div>
+                                                                    </template>
+                                                                    <template slot="selected-option" slot-scope="option" >
+                                                                        <div class="selected d-center">
+
+                                                                            {{ option.name }} - {{option.sku}}
+                                                                        </div>
+                                                                    </template>
+                                                                </v-select>
+
+                                                                <label v-if="variationSelect" for="select1" class="col-8 control-label">
+                                                                    Please Select Variation
+                                                                </label>
+
+                                                                <select v-if="variationSelect" v-model="variation_info" @change="changeProductName($event)" style="width: 100%; margin-bottom: 10px">
+                                                                    <option v-if="variation.stock_status = 'instock'" v-for="(variation,index) in options2" v-bind:value="{id: variation.id, name: variation.name, sku: variation.sku }">
+                                                                        {{variation.name}} - ({{variation.sku}})
+                                                                    </option>
+                                                                </select>
+
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <label>Quantity</label>
+                                                                <input v-model="addQuantity" type="number" name="quantity" class="form-control">
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <button type="button" class="btn btn-success mt-4" @click="productAddUpdate(order.id)">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+
+
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col">#</th>
+                                                                        <th scope="col">Name</th>
+                                                                        <th scope="col">SKU</th>
+                                                                        <th scope="col">Variation</th>
+                                                                        <th scope="col">Price</th>
+                                                                        <th scope="col">Quantity</th>
+                                                                        <th scope="col">Total</th>
+                                                                        <th scope="col">Action</th>
+                                                                    </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+                                                                    <tr v-for="(detail,index) in order.line_items" :key="index">
+                                                                        <th scope="row">{{index+1}}</th>
+                                                                        <td>{{detail.name}}</td>
+                                                                        <td>{{detail.sku}}</td>
+                                                                        <td>{{detail.variation_id}}</td>
+                                                                        <td>
+                                                                            {{parseInt(detail.subtotal)/detail.quantity}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{detail.quantity}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{detail.subtotal}}
+                                                                        </td>
+                                                                        <td><button type="button" class="btn btn-danger" @click="productDeleteUpdate(order, detail)">
+                                                                            <i class="fas fa-minus"></i>
+                                                                        </button>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    
 
 
 
 
-                                </tr>
+                                    </tr>
 
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
@@ -2410,17 +2410,15 @@
     width: 300px;
 }
 
+ .header {
+        position: sticky;
+        top:0;
+}
 
-/*.table-hover tbody {*/
-    /*height: 400px;*/
-    /*overflow-y: auto;*/
-    /*width: 100%;*/
-/*}*/
-
-/*.table-hover tbody{*/
-    /*display: block;*/
-/*}*/
-
+    .mytable {
+        height: 600px;
+        overflow: auto;
+    }
 
 
 </style>
