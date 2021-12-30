@@ -31,10 +31,20 @@
             <router-link to="/web-orders" class="nav-link">
                 <i class="nav-icon fas fa-list orange"></i>
                 <p>
-                    Web Order
+                   All Order
                 </p>
             </router-link>
         </li>
+
+        <li class="nav-item">
+            <router-link to="/processing-orders" class="nav-link">
+                <i class="nav-icon fas fa-list orange"></i>
+                <p>
+                   Processing Order
+                </p>
+            </router-link>
+        </li>
+
 
         {{--<li class="nav-item">--}}
             {{--<router-link to="/reports" class="nav-link">--}}

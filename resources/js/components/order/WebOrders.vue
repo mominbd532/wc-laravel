@@ -59,24 +59,24 @@
                                 <table class="table table-hover">
                                     <thead style="position: sticky; top: 0" class="thead-dark">
                                     <tr>
-                                        <th class="header"><label class="form-checkbox"><input type="checkbox" v-model="selectAll" @click="selectALLRow"><i class="form-icon"></i></label></th>
+                                        <th class="header"><label class="form-checkbox mb-0"><input type="checkbox" v-model="selectAll" @click="selectALLRow"><i class="form-icon"></i></label></th>
                                         <th class="header">Id</th>
                                         <th class="header">Date</th>
                                         <th class="header">Name</th>
                                         <th class="header">Address</th>
                                         <th class="header">Phone</th>
-                                        <th class="header">Sub Total</th>
+                                        <th class="header my-white-space">Sub Total</th>
                                         <th class="header">Discount</th>
                                         <th class="header">Shipping Titles</th>
                                         <th class="header">Shipping Cost</th>
-                                        <th class="header">Grand Total</th>
+                                        <th class="header my-white-space">Grand Total</th>
                                         <th class="header">Payment Method</th>
                                         <th class="header">Status</th>
                                         <th class="header">Notes</th>
                                         <th class="header">Txn Number</th>
                                         <th class="header">Txn Id</th>
-                                        <th class="header">Coupon Id</th>
-                                        <th class="header">Order Created Way</th>
+                                        <th class="header my-white-space">Coupon Id</th>
+                                        <th class="header my-white-space">Order Created Way</th>
 
                                     </tr>
                                     </thead>
@@ -104,7 +104,7 @@
                                         </td>
                                         <td>
                                             <input v-if="order.shipping_lines.length > 0" :value="order.shipping_lines[0].method_title" type="text" name="shipping_method"
-                                                class="form-control" style="width: fit-content;" @change="updateShippingTitles($event, order)" >
+                                                class="form-control" style="width: 150px;" @change="updateShippingTitles($event, order)" >
                                         </td>
                                         <td>
                                             <input :value="order.shipping_total" type="number" name="shipping_cost" class="form-control" style="width: 100px;" @change="updateShippingCost($event, order)" >
@@ -1294,7 +1294,7 @@
                             var noteUrl = "orders/"+response.data.id+"/notes";
                             // Add Order Create note
                             diniApi.post(noteUrl,{
-                                note: "Update Order Billing Name by Id:"+user.id+" Name: "+user.name
+                                note: "Update Order Billing Address by Id:"+user.id+" Name: "+user.name
                             })
                                 .then((response1)=>{
 
@@ -1373,7 +1373,7 @@
                             var noteUrl = "orders/"+response.data.id+"/notes";
                             // Add Order Create note
                             diniApi.post(noteUrl,{
-                                note: "Update Order Billing Name by Id:"+user.id+" Name: "+user.name
+                                note: "Update Order Billing Phone by Id:"+user.id+" Name: "+user.name
                             })
                                 .then((response1)=>{
 
@@ -1455,7 +1455,7 @@
                             var noteUrl = "orders/"+response.data.id+"/notes";
                             // Add Order Create note
                             diniApi.post(noteUrl,{
-                                note: "Update Order Billing Name by Id:"+user.id+" Name: "+user.name
+                                note: "Update Order Payment Method by Id:"+user.id+" Name: "+user.name
                             })
                                 .then((response1)=>{
 
@@ -1538,7 +1538,7 @@
                             var noteUrl = "orders/"+response.data.id+"/notes";
                             // Add Order Create note
                             diniApi.post(noteUrl,{
-                                note: "Update Order Billing Name by Id:"+user.id+" Name: "+user.name
+                                note: "Update Order Shipping Titles by Id:"+user.id+" Name: "+user.name
                             })
                                 .then((response1)=>{
 
@@ -1618,7 +1618,7 @@
                             var noteUrl = "orders/"+response.data.id+"/notes";
                             // Add Order Create note
                             diniApi.post(noteUrl,{
-                                note: "Update Order Billing Name by Id:"+user.id+" Name: "+user.name
+                                note: "Update Order Shipping Cost by Id:"+user.id+" Name: "+user.name
                             })
                                 .then((response1)=>{
 
@@ -1693,7 +1693,7 @@
                             var noteUrl = "orders/"+response.data.id+"/notes";
                             // Add Order Create note
                             diniApi.post(noteUrl,{
-                                note: "Update Order Billing Name by Id:"+user.id+" Name: "+user.name
+                                note: "Update Order Status by Id:"+user.id+" Name: "+user.name
                             })
                                 .then((response1)=>{
 
@@ -1792,7 +1792,7 @@
                             var noteUrl = "orders/"+response.data.id+"/notes";
                             // Add Order Create note
                             diniApi.post(noteUrl,{
-                                note: "Update Order Billing Name by Id:"+user.id+" Name: "+user.name
+                                note: "Update Order Discount by Id:"+user.id+" Name: "+user.name
                             })
                                 .then((response1)=>{
 
@@ -2418,6 +2418,10 @@
     .mytable {
         height: 600px;
         overflow: auto;
+    }
+
+    .my-white-space{
+        white-space: nowrap;
     }
 
 

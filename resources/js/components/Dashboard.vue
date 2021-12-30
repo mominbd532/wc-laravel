@@ -1,66 +1,142 @@
 <template>
     <section class="content">
         <div class="container-fluid">
-            <div class="row ">
-                <!--<div class="col-12 col-sm-6 col-md-3">-->
-                    <!--<div class="info-box">-->
-                        <!--<span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>-->
+            <div v-if="list_shown" class="row ">
 
-                        <!--<div class="info-box-content">-->
-                            <!--<span class="info-box-text">CPU Traffic</span>-->
-                            <!--<span class="info-box-number">-->
-                            <!--10-->
-                            <!--<small>%</small>-->
-                            <!--</span>-->
-                        <!--</div>-->
-                        <!--&lt;!&ndash; /.info-box-content &ndash;&gt;-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash; /.info-box &ndash;&gt;-->
-                <!--</div>-->
-                <!-- /.col -->
-                <!--<div class="col-12 col-sm-6 col-md-3">-->
-                    <!--<div class="info-box mb-3">-->
-                        <!--<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>-->
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-sign-language"></i></span>
 
-                        <!--<div class="info-box-content">-->
-                            <!--<span class="info-box-text">Likes</span>-->
-                            <!--<span class="info-box-number">41,410</span>-->
-                        <!--</div>-->
-                        <!--&lt;!&ndash; /.info-box-content &ndash;&gt;-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash; /.info-box &ndash;&gt;-->
-                <!--</div>-->
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{orders_total[1].name}}</span>
+                            <span class="info-box-number">{{orders_total[1].total}}</span>
+                        </div>
+                    </div>
+                </div>
                 <!-- /.col -->
 
-                <!-- fix for small devices only -->
-                <!--<div class="clearfix hidden-md-up"></div>-->
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-pause-circle"></i></span>
 
-                <!--<div class="col-12 col-sm-6 col-md-3">-->
-                    <!--<div class="info-box mb-3">-->
-                        <!--<span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>-->
-
-                        <!--<div class="info-box-content">-->
-                            <!--<span class="info-box-text">Sales</span>-->
-                            <!--<span class="info-box-number">760</span>-->
-                        <!--</div>-->
-                        <!--&lt;!&ndash; /.info-box-content &ndash;&gt;-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash; /.info-box &ndash;&gt;-->
-                <!--</div>-->
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{orders_total[2].name}}</span>
+                            <span class="info-box-number">{{orders_total[2].total}}</span>
+                        </div>
+                    </div>
+                </div>
                 <!-- /.col -->
-                <!--<div class="col-12 col-sm-6 col-md-3">-->
-                    <!--<div class="info-box mb-3">-->
-                        <!--<span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>-->
 
-                        <!--<div class="info-box-content">-->
-                            <!--<span class="info-box-text">New Members</span>-->
-                            <!--<span class="info-box-number">2,000</span>-->
-                        <!--</div>-->
-                    <!--&lt;!&ndash; /.info-box-content &ndash;&gt;-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash; /.info-box &ndash;&gt;-->
-                <!--</div>-->
-            <!-- /.col -->
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check-circle"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{orders_total[3].name}}</span>
+                            <span class="info-box-number">{{orders_total[3].total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-secondary elevation-1"><i class="fas fa-truck"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{orders_total[4].name}}</span>
+                            <span class="info-box-number">{{orders_total[4].total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon elevation-1" style="background: #a142f5; color: #fff;" ><i class="fas fa-truck-loading"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{orders_total[5].name}}</span>
+                            <span class="info-box-number">{{orders_total[5].total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon elevation-1" style="background: #FFA500; color: #fff;"><i class="fas fa-undo"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{orders_total[6].name}}</span>
+                            <span class="info-box-number">{{orders_total[6].total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-file-archive"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{orders_total[7].name}}</span>
+                            <span class="info-box-number">{{orders_total[7].total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-window-close"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{orders_total[8].name}}</span>
+                            <span class="info-box-number">{{orders_total[8].total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon elevation-1" style="background: #4B3869; color: #fff;"><i class="fas fa-hand-holding-usd"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{orders_total[9].name}}</span>
+                            <span class="info-box-number">{{orders_total[9].total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon elevation-1" style="background: #5D8233; color: #fff;"><i class="fas fa-stop"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{orders_total[10].name}}</span>
+                            <span class="info-box-number">{{orders_total[10].total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon elevation-1" style="background: #F2789F; color: #fff;"><i class="fas fa-money-bill-alt"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{orders_total[0].name}}</span>
+                            <span class="info-box-number">{{orders_total[0].total}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+
+
+              
             </div>
             <!-- /.row -->
 
@@ -205,8 +281,34 @@
 
 <script>
     export default {
+
+        data (){
+            return {
+                   orders_total: [],
+                   list_shown: false,
+            }
+        },
+
+        methods: {
+            getOrderTotals(){
+                diniApi.get("reports/orders/totals")
+                    .then((response) => {
+                        console.log(response.data);
+                        this.orders_total = response.data;
+                        this.list_shown = true;
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    })
+            }
+        },
         mounted() {
             console.log('Component mounted.')
-        }
+        },
+        created() {
+            this.$Progress.start();
+            this.getOrderTotals();
+            this.$Progress.finish();
+        },
     }
 </script>
