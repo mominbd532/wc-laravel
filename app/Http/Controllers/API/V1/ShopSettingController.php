@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\ShopSetting;
 use Illuminate\Http\Request;
 
-class ShopSettingController extends Controller
+class ShopSettingController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,9 @@ class ShopSettingController extends Controller
      */
     public function index()
     {
-        //
+        $settings['data'] =ShopSetting::get();
+
+        return response()->json($settings);
     }
 
     /**
@@ -69,7 +72,9 @@ class ShopSettingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        ShopSetting::where('id',$id)->update($request->all());
+        $ship_setting['message'] = 'Data Uploaded Successfully';
+        return response($ship_setting);
     }
 
     /**
@@ -82,4 +87,27 @@ class ShopSettingController extends Controller
     {
         //
     }
+
+
+    public function upload(Request $request){
+
+        $request->validate([
+            'file' => 'required|mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf|max:2048'
+        ]);
+
+        if($request->file()) {
+            $file_name = time().'_'.$request->file->getClientOriginalName();
+            $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
+
+            $file_path = '/storage/' . $file_path;
+
+
+            ShopSetting::where('id',request('id'))->update(['value' => $file_path]);
+            $ship_setting['message'] = 'Image Uploaded Successfully';
+            return response($ship_setting);
+        }
+
+
+    }
+
 }

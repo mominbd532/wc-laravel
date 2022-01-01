@@ -17,6 +17,7 @@ class CreateShopSettingsTable extends Migration
             $table->id();
             $table->string('key')->unique();
             $table->string('value')->nullable();
+            $table->string('type');
             $table->timestamps();
         });
     }

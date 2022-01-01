@@ -102,6 +102,14 @@
                     </p>
                 </router-link>
             </li>
+            <li class="nav-item">
+                <router-link to="/shop-setting" class="nav-link">
+                    <i class="nav-icon fas fa-list-ol green"></i>
+                    <p>
+                        Shop Setting
+                    </p>
+                </router-link>
+            </li>
           {{--<li class="nav-item">--}}
             {{--<router-link to="/product/tag" class="nav-link">--}}
               {{--<i class="nav-icon fas fa-tags green"></i>--}}

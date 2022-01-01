@@ -33,6 +33,7 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
     Route::get('tag/list', 'TagController@list');
     Route::get('category/list', 'CategoryController@list');
     Route::post('product/upload', 'ProductController@upload');
+    Route::post('shopping-setting/upload', 'ShopSettingController@upload');
 
 
     Route::get('order/date', 'OrderController@dateWiseOrder');
@@ -47,5 +48,6 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
         'order-status' => 'OrderStatusController',
         'payment-methods' => 'PaymentMethodController',
         'shipping-titles' => 'ShippingController',
+        'shopping-setting' => 'ShopSettingController',
     ]);
 });

@@ -1,6 +1,8 @@
 <?php
 
 use Automattic\WooCommerce\Client;
+use App\Models\ShopSetting;
+
 $my_site_url = env('MIX_WC_URL');
 $my_site_ck = env('MIX_WC_CONSUMER_KEY');
 $my_site_cs = env('MIX_WC_CONSUMER_SECRET');
@@ -17,6 +19,8 @@ $my_site_version = env('MIX_WC_VERSION');
 
          $order =$woocommerce->get('orders/'.$id);
 
+
+$shop_set = ShopSetting::get();
 
  ?>
 
@@ -59,24 +63,24 @@ Invoice</h1>
 		<td class="order-data">
 			<table>
 				<tr class="invoice-number">
-					<th>Invoice Number:</th>
-					<td>
-						@foreach($order->meta_data as $meta_info)
-						@if($meta_info->key == "_wcpdf_invoice_number")
-						<b>{{$meta_info->value}}</b>
-						@endif
-						@endforeach
-					</td>
+{{--					<th>Invoice Number:</th>--}}
+{{--					<td>--}}
+{{--						@foreach($order->meta_data as $meta_info)--}}
+{{--						@if($meta_info->key == "_wcpdf_invoice_number")--}}
+{{--						<b>{{$meta_info->value}}</b>--}}
+{{--						@endif--}}
+{{--						@endforeach--}}
+{{--					</td>--}}
 				</tr>
 				<tr class="invoice-date">
-					<th>Invoice Date:</th>
-					<td>
-                       @foreach($order->meta_data as $meta_info)
-						@if($meta_info->key == "_wcpdf_invoice_date_formatted")
-						{{date("d-M-Y", strtotime($meta_info->value))}}
-						@endif
-						@endforeach
-					</td>
+{{--					<th>Invoice Date:</th>--}}
+{{--					<td>--}}
+{{--                       @foreach($order->meta_data as $meta_info)--}}
+{{--						@if($meta_info->key == "_wcpdf_invoice_date_formatted")--}}
+{{--						{{date("d-M-Y", strtotime($meta_info->value))}}--}}
+{{--						@endif--}}
+{{--						@endforeach--}}
+{{--					</td>--}}
 				</tr>
 				<tr class="order-number">
 					<th>Order Number:</th>

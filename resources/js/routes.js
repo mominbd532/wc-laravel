@@ -11,5 +11,6 @@ export default [
     { path: '/web-orders', component: require('./components/order/WebOrders.vue').default },
     { path: '/processing-orders', component: require('./components/order/ProcessingOrders.vue').default },
     { path: '/payment-methods', component: require('./components/order/PaymentMethods.vue').default },
-    { path: '/shipping-titles', component: require('./components/order/ShippingTitles.vue').default }
+    { path: '/shipping-titles', component: require('./components/order/ShippingTitles.vue').default },
+    { path: '/shop-setting', component: require('./components/ShopSetting.vue').default }
 ];
