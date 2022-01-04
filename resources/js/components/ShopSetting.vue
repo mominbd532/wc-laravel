@@ -40,7 +40,7 @@
 
                       </td>
                          <td v-else>
-                             <input type="text" :value="shop_set.value" @change="updateInfo($event, shop_set.id)">
+                             <textarea @change="updateInfo($event, shop_set.id)" >{{shop_set.value}}</textarea>
                          </td>
                     </tr>
                   </tbody>

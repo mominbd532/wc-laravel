@@ -33,4 +33,12 @@ class HomeController extends Controller
         return view('invoice',compact('id'));
     }
 
+    public function batchInvoice(Request $request){
+
+        $myString = $request->orderID;
+        $myArray = explode(',', $myString);
+
+        return view('batch-invoice',compact('myArray'));
+    }
+
 }

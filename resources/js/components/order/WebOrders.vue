@@ -43,6 +43,7 @@
                             <select v-model="selectedAction" class="ml-2">
                               <option disabled value="">Please select one</option>
                                <option v-for="(orderStatus,index) in orderStatuses" :key="index" :value="orderStatus.status">Change status to {{orderStatus.name}}</option>
+                                <option value="bulk_invoice" >Print Invoice</option>
                             </select>
                             <button type="button" class="btn btn-sm btn-info" @click="multiActions" :disabled="!selectedAction">Action</button>
 
@@ -86,7 +87,7 @@
                                         <td><input type="checkbox" :value="order" v-model="selectedRow"></td>
                                         <td><a href="#" @click="productModal(order.id)">{{order.id}}</a></td>
                                         <td><a href="#" @click="genaratePDF(order.id)" style="display: flex; width: 135px;">{{diniDateTime(order.date_created)}}</a></td>
-                                    
+
                                         <td>
                                             <input :value="order.billing.first_name" type="text" name="name" @change="updateBillingName($event,order.id)"  style="width: 150px" class="form-control">
                                         </td>
@@ -96,7 +97,7 @@
                                         <td>
                                             <input :value="order.billing.phone" type="text" name="phone" required="required" @change="updateBillingPhone($event, order.id)" class="form-control" style="width: 140px;">
                                         </td>
-                                      
+
 
                                         <td><p style="white-space: nowrap;">{{parseInt(order.total) + parseInt(order.discount_total) - parseInt(order.shipping_total)}} TK</p></td>
                                         <td>
@@ -351,7 +352,7 @@
                                             </div>
                                         </div>
 
-                                    
+
 
 
 
@@ -363,7 +364,7 @@
                                 </table>
 
                             </div>
-                            
+
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
@@ -2083,6 +2084,8 @@
                             status: "processing"
                         });
                      });
+
+                    this.batchOrderUpdate(multiPost, noteData );
                     }
 
 
@@ -2100,6 +2103,7 @@
                             status: "on-hold"
                         });
                      });
+                    this.batchOrderUpdate(multiPost, noteData );
                     }
 
                     // Batch order status changed to confirmed
@@ -2116,6 +2120,8 @@
                             status: "confirmed"
                         });
                      });
+
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
 
@@ -2133,6 +2139,7 @@
                             status: "shipping"
                         });
                      });
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
                     // Batch order status changed to delivered
@@ -2149,6 +2156,7 @@
                             status: "delivered"
                         });
                      });
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
                     // Batch order status changed to return
@@ -2165,6 +2173,8 @@
                             status: "return"
                         });
                      });
+
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
                     // Batch order status changed to shipping-hold
@@ -2181,6 +2191,8 @@
                             status: "shipping-hold"
                         });
                      });
+
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
 
@@ -2198,6 +2210,8 @@
                             status: "completed"
                         });
                      });
+
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
                     // Batch order status changed to cancelled
@@ -2214,67 +2228,34 @@
                             status: "cancelled"
                         });
                      });
+
+                        this.batchOrderUpdate(multiPost, noteData );
+                    }
+
+                    // Batch invoice print
+
+                    if(this.selectedAction == "bulk_invoice"){
+
+                       let ids = []
+
+                        $.each(selectedRowData, function(key, value) {
+
+                            ids.push(value.id);
+
+                        });
+
+                        var strIDS = ids.toString();
+
+                       // console.log(str1);
+
+                        window.open(window.location.origin+"/batch-invoice?orderID="+strIDS, '_blank');
+
+
                     }
 
 
-                    console.log(multiPost);
-                    console.log(noteData);
-
-
-
-
-
                     // console.log(multiPost);
-
-                this.$Progress.start();
-                diniApi.post("orders/batch",multiPost)
-                    .then((response)=>{
-                        console.log(response);
-
-                        $.each(selectedRowData, function(key, value) {
-                             var noteUrl = "orders/"+value.id+"/notes";
-                                // Add Order Create note
-                                diniApi.post(noteUrl,{
-                                    note: noteData+" Id:"+user.id+" Name: "+user.name
-                                })
-                                    .then((response1)=>{
-                                              //
-                                    })
-                                    .catch((error)=>{
-                                        console.log(error);
-                                        Toast.fire({
-                                            icon: 'error',
-                                            title: 'Some error occured! Please try again'
-                                        });
-                                    });
-
-                          });
-
-
-
-                        Toast.fire({
-                                            icon: 'success',
-                                            title: 'Batch Orders update successfully'
-                                        });
-                        this.getWebOrders();
-                        this.refreshPostOrderData();
-                        this.$Progress.finish();
-
-                    })
-                    .catch((error)=>{
-
-                        console.log("Batch Update processing status Error");
-                        console.kog(error);
-                        Toast.fire({
-                            icon: 'error',
-                            title: 'Some error occured! Please try again'
-                        });
-
-                        this.getWebOrders();
-                        this.refreshPostOrderData();
-                        this.$Progress.failed();
-                    });
-
+                    // console.log(noteData);
 
 
 
@@ -2288,6 +2269,64 @@
 
 
             },
+
+
+            batchOrderUpdate: function(data, notes){
+
+                let selectedRowData =this.selectedRow;
+
+                this.$Progress.start();
+                diniApi.post("orders/batch",data)
+                    .then((response)=>{
+                        // console.log(response);
+
+                        $.each(selectedRowData, function(key, value) {
+                            var noteUrl = "orders/"+value.id+"/notes";
+                            // Add Order Create note
+                            diniApi.post(noteUrl,{
+                                note: notes+" Id:"+user.id+" Name: "+user.name
+                            })
+                                .then((response1)=>{
+                                    //
+                                })
+                                .catch((error)=>{
+                                    console.log(error);
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: 'Some error occured! Please try again'
+                                    });
+                                });
+
+                        });
+
+
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Batch Orders update successfully'
+                        });
+                        this.getWebOrders();
+                        this.refreshPostOrderData();
+                        this.$Progress.finish();
+
+                    })
+                    .catch((error)=>{
+
+                        console.log("Batch Update processing status Error");
+                        console.log(error);
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Some error occured! Please try again'
+                        });
+
+                        this.getWebOrders();
+                        this.refreshPostOrderData();
+                        this.$Progress.failed();
+                    });
+
+
+
+                },
 
             genaratePDF(id){
                window.open(window.location.origin+"/invoice-genarte/"+id, '_blank');

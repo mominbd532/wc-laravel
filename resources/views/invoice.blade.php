@@ -20,7 +20,10 @@ $my_site_version = env('MIX_WC_VERSION');
          $order =$woocommerce->get('orders/'.$id);
 
 
-$shop_set = ShopSetting::get();
+$shop_logo = ShopSetting::where('key','shop_logo')->get()->first();
+$shop_name = ShopSetting::where('key','shop_name')->get()->first();
+$shop_address = ShopSetting::where('key','shop_address')->get()->first();
+
 
  ?>
 
@@ -35,11 +38,11 @@ $shop_set = ShopSetting::get();
 <table class="head container">
 	<tr>
 		<td class="header">
-		<img src="{{asset('logo1.png')}}" alt="{{env('APP_NAME')}}" />
+		<img src="{{asset($shop_logo->value)}}" alt="{{$shop_name->value}}" />
 	    </td>
 		<td class="shop-info">
-			<div class="shop-name"><h3>{{env('MY_SHOP_TITLE')}}</h3></div>
-			<div class="shop-address"><p>{{env('MY_SHOP_ADDRESS')}}</p></div>
+			<div class="shop-name"><h3>{{$shop_name->value}}</h3></div>
+			<div class="shop-address"><p>{!! $shop_address->value !!}</p></div>
 		</td>
 	</tr>
 </table>

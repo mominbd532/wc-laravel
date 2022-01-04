@@ -19,11 +19,15 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 
+
+
 Auth::routes(['register' => false,'reset' => false,'verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/invoice-genarte/{id}', [App\Http\Controllers\HomeController::class, 'invoiceGenarate'])->name('invoiceGenarate');
+
+Route::get('/batch-invoice/', [App\Http\Controllers\HomeController::class, 'batchInvoice'])->name('batchInvoice');
 
 Route::get('home', function () {
     return redirect('/dashboard');

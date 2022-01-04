@@ -38,7 +38,7 @@
                     <div class="card">
                         <div class="card-header">
 
-                            <h3 class="card-title">Processing Order List</h3>
+                            <h3 class="card-title">Processing Order</h3>
 
                             <select v-model="selectedAction" class="ml-2">
                               <option disabled value="">Please select one</option>
@@ -86,7 +86,7 @@
                                         <td><input type="checkbox" :value="order" v-model="selectedRow"></td>
                                         <td><a href="#" @click="productModal(order.id)">{{order.id}}</a></td>
                                         <td><a href="#" @click="genaratePDF(order.id)" style="display: flex; width: 135px;">{{diniDateTime(order.date_created)}}</a></td>
-                                    
+
                                         <td>
                                             <input :value="order.billing.first_name" type="text" name="name" @change="updateBillingName($event,order.id)"  style="width: 150px" class="form-control">
                                         </td>
@@ -96,7 +96,7 @@
                                         <td>
                                             <input :value="order.billing.phone" type="text" name="phone" required="required" @change="updateBillingPhone($event, order.id)" class="form-control" style="width: 140px;">
                                         </td>
-                                      
+
 
                                         <td><p style="white-space: nowrap;">{{parseInt(order.total) + parseInt(order.discount_total) - parseInt(order.shipping_total)}} TK</p></td>
                                         <td>
@@ -351,7 +351,7 @@
                                             </div>
                                         </div>
 
-                                    
+
 
 
 
@@ -363,7 +363,7 @@
                                 </table>
 
                             </div>
-                            
+
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
@@ -808,7 +808,7 @@
 
 
 
-                diniApi.get("orders?after="+start+"T00:00:00&before="+end+"T00:00:00&page="+this.dateWisePage+"&per_page=100")
+                diniApi.get("orders?after="+start+"T00:00:00&before="+end+"T00:00:00&page="+this.dateWisePage+"&per_page=100&status=processing")
                     .then((response) => {
 
                         if(response.data.length){
@@ -833,7 +833,7 @@
 
                  this.$Progress.start();
 
-                diniApi.get("orders?search="+event.target.value)
+                diniApi.get("orders?search="+event.target.value+"&status=processing")
                     .then((response) => {
                             this.orders = response.data;
                     })
