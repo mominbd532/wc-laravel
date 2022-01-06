@@ -2127,16 +2127,16 @@
 
                     // Batch order status changed to shipping
 
-                    if(this.selectedAction == "shipping"){
+                    if(this.selectedAction == "in-transit"){
 
                     multiPost = {update: []};
 
-                    noteData = "Batch Order status update to shipping by";
+                    noteData = "Batch Order status update to In Transit by";
 
                     $.each(selectedRowData, function(key, value) {
                         multiPost.update.push({
                             id: value.id,
-                            status: "shipping"
+                            status: "in-transit"
                         });
                      });
                         this.batchOrderUpdate(multiPost, noteData );
@@ -2161,16 +2161,16 @@
 
                     // Batch order status changed to return
 
-                    if(this.selectedAction == "return"){
+                    if(this.selectedAction == "returned"){
 
                     multiPost = {update: []};
 
-                    noteData = "Batch Order status update to return by";
+                    noteData = "Batch Order status update to Returned by";
 
                     $.each(selectedRowData, function(key, value) {
                         multiPost.update.push({
                             id: value.id,
-                            status: "return"
+                            status: "returned"
                         });
                      });
 
@@ -2178,25 +2178,6 @@
                     }
 
                     // Batch order status changed to shipping-hold
-
-                    if(this.selectedAction == "shipping-hold"){
-
-                    multiPost = {update: []};
-
-                    noteData = "Batch Order status update to shipping-hold by";
-
-                    $.each(selectedRowData, function(key, value) {
-                        multiPost.update.push({
-                            id: value.id,
-                            status: "shipping-hold"
-                        });
-                     });
-
-                        this.batchOrderUpdate(multiPost, noteData );
-                    }
-
-
-                    // Batch order status changed to completed
 
                     if(this.selectedAction == "completed"){
 
@@ -2214,7 +2195,8 @@
                         this.batchOrderUpdate(multiPost, noteData );
                     }
 
-                    // Batch order status changed to cancelled
+
+                    // Batch order status changed to completed
 
                     if(this.selectedAction == "cancelled"){
 
@@ -2226,6 +2208,24 @@
                         multiPost.update.push({
                             id: value.id,
                             status: "cancelled"
+                        });
+                     });
+
+                        this.batchOrderUpdate(multiPost, noteData );
+                    }
+
+                    // Batch order status changed to cancelled
+
+                    if(this.selectedAction == "refunded"){
+
+                    multiPost = {update: []};
+
+                    noteData = "Batch Order status update to refunded by";
+
+                    $.each(selectedRowData, function(key, value) {
+                        multiPost.update.push({
+                            id: value.id,
+                            status: "refunded"
                         });
                      });
 

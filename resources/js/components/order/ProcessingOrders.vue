@@ -894,7 +894,6 @@
             getOrderStatuses(){
 
                 this.orderStatuses = [
-                    {'name': 'Processing','status': 'processing'},
                     {'name': 'On hold','status': 'on-hold'},
                     {'name': 'Cancelled','status': 'cancelled'},
                     {'name': 'Confirmed','status': 'confirmed'},
@@ -2070,26 +2069,28 @@
 
                 if(this.selectedRow.length > 0){
                     console.log(this.selectedAction);
-                   let multiPost = {};
+                    let multiPost = {};
 
-                   let noteData = "";
+                    let noteData = "";
 
-                   let selectedRowData =this.selectedRow;
+                    let selectedRowData =this.selectedRow;
 
                     // Batch order status changed to processing
 
                     if(this.selectedAction == "processing"){
 
-                    multiPost = {update: []};
+                        multiPost = {update: []};
 
-                    noteData = "Batch Order status update to processing by";
+                        noteData = "Batch Order status update to processing by";
 
-                    $.each(selectedRowData, function(key, value) {
-                        multiPost.update.push({
-                            id: value.id,
-                            status: "processing"
+                        $.each(selectedRowData, function(key, value) {
+                            multiPost.update.push({
+                                id: value.id,
+                                status: "processing"
+                            });
                         });
-                     });
+
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
 
@@ -2097,172 +2098,218 @@
 
                     if(this.selectedAction == "on-hold"){
 
-                    multiPost = {update: []};
+                        multiPost = {update: []};
 
-                    noteData = "Batch Order status update to on hold by";
+                        noteData = "Batch Order status update to on hold by";
 
-                    $.each(selectedRowData, function(key, value) {
-                        multiPost.update.push({
-                            id: value.id,
-                            status: "on-hold"
+                        $.each(selectedRowData, function(key, value) {
+                            multiPost.update.push({
+                                id: value.id,
+                                status: "on-hold"
+                            });
                         });
-                     });
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
                     // Batch order status changed to confirmed
 
                     if(this.selectedAction == "confirmed"){
 
-                    multiPost = {update: []};
+                        multiPost = {update: []};
 
-                    noteData = "Batch Order status update to confirmed by";
+                        noteData = "Batch Order status update to confirmed by";
 
-                    $.each(selectedRowData, function(key, value) {
-                        multiPost.update.push({
-                            id: value.id,
-                            status: "confirmed"
+                        $.each(selectedRowData, function(key, value) {
+                            multiPost.update.push({
+                                id: value.id,
+                                status: "confirmed"
+                            });
                         });
-                     });
+
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
 
                     // Batch order status changed to shipping
 
-                    if(this.selectedAction == "shipping"){
+                    if(this.selectedAction == "in-transit"){
 
-                    multiPost = {update: []};
+                        multiPost = {update: []};
 
-                    noteData = "Batch Order status update to shipping by";
+                        noteData = "Batch Order status update to In Transit by";
 
-                    $.each(selectedRowData, function(key, value) {
-                        multiPost.update.push({
-                            id: value.id,
-                            status: "shipping"
+                        $.each(selectedRowData, function(key, value) {
+                            multiPost.update.push({
+                                id: value.id,
+                                status: "in-transit"
+                            });
                         });
-                     });
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
                     // Batch order status changed to delivered
 
                     if(this.selectedAction == "delivered"){
 
-                    multiPost = {update: []};
+                        multiPost = {update: []};
 
-                    noteData = "Batch Order status update to delivered by";
+                        noteData = "Batch Order status update to delivered by";
 
-                    $.each(selectedRowData, function(key, value) {
-                        multiPost.update.push({
-                            id: value.id,
-                            status: "delivered"
+                        $.each(selectedRowData, function(key, value) {
+                            multiPost.update.push({
+                                id: value.id,
+                                status: "delivered"
+                            });
                         });
-                     });
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
                     // Batch order status changed to return
 
-                    if(this.selectedAction == "return"){
+                    if(this.selectedAction == "returned"){
 
-                    multiPost = {update: []};
+                        multiPost = {update: []};
 
-                    noteData = "Batch Order status update to return by";
+                        noteData = "Batch Order status update to Returned by";
 
-                    $.each(selectedRowData, function(key, value) {
-                        multiPost.update.push({
-                            id: value.id,
-                            status: "return"
+                        $.each(selectedRowData, function(key, value) {
+                            multiPost.update.push({
+                                id: value.id,
+                                status: "returned"
+                            });
                         });
-                     });
+
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
                     // Batch order status changed to shipping-hold
 
-                    if(this.selectedAction == "shipping-hold"){
+                    if(this.selectedAction == "completed"){
 
-                    multiPost = {update: []};
+                        multiPost = {update: []};
 
-                    noteData = "Batch Order status update to shipping-hold by";
+                        noteData = "Batch Order status update to completed by";
 
-                    $.each(selectedRowData, function(key, value) {
-                        multiPost.update.push({
-                            id: value.id,
-                            status: "shipping-hold"
+                        $.each(selectedRowData, function(key, value) {
+                            multiPost.update.push({
+                                id: value.id,
+                                status: "completed"
+                            });
                         });
-                     });
+
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
 
                     // Batch order status changed to completed
 
-                    if(this.selectedAction == "completed"){
+                    if(this.selectedAction == "cancelled"){
 
-                    multiPost = {update: []};
+                        multiPost = {update: []};
 
-                    noteData = "Batch Order status update to completed by";
+                        noteData = "Batch Order status update to cancelled by";
 
-                    $.each(selectedRowData, function(key, value) {
-                        multiPost.update.push({
-                            id: value.id,
-                            status: "completed"
+                        $.each(selectedRowData, function(key, value) {
+                            multiPost.update.push({
+                                id: value.id,
+                                status: "cancelled"
+                            });
                         });
-                     });
+
+                        this.batchOrderUpdate(multiPost, noteData );
                     }
 
                     // Batch order status changed to cancelled
 
-                    if(this.selectedAction == "cancelled"){
+                    if(this.selectedAction == "refunded"){
 
-                    multiPost = {update: []};
+                        multiPost = {update: []};
 
-                    noteData = "Batch Order status update to cancelled by";
+                        noteData = "Batch Order status update to refunded by";
 
-                    $.each(selectedRowData, function(key, value) {
-                        multiPost.update.push({
-                            id: value.id,
-                            status: "cancelled"
+                        $.each(selectedRowData, function(key, value) {
+                            multiPost.update.push({
+                                id: value.id,
+                                status: "refunded"
+                            });
                         });
-                     });
+
+                        this.batchOrderUpdate(multiPost, noteData );
+                    }
+
+                    // Batch invoice print
+
+                    if(this.selectedAction == "bulk_invoice"){
+
+                        let ids = []
+
+                        $.each(selectedRowData, function(key, value) {
+
+                            ids.push(value.id);
+
+                        });
+
+                        var strIDS = ids.toString();
+
+                        // console.log(str1);
+
+                        window.open(window.location.origin+"/batch-invoice?orderID="+strIDS, '_blank');
+
+
                     }
 
 
-                    console.log(multiPost);
-                    console.log(noteData);
-
-
-
-
-
                     // console.log(multiPost);
+                    // console.log(noteData);
+
+
+
+                }else{
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Please select minimum one row'
+                    });
+                }
+
+
+
+            },
+
+
+            batchOrderUpdate: function(data, notes){
+
+                let selectedRowData =this.selectedRow;
 
                 this.$Progress.start();
-                diniApi.post("orders/batch",multiPost)
+                diniApi.post("orders/batch",data)
                     .then((response)=>{
-                        console.log(response);
+                        // console.log(response);
 
                         $.each(selectedRowData, function(key, value) {
-                             var noteUrl = "orders/"+value.id+"/notes";
-                                // Add Order Create note
-                                diniApi.post(noteUrl,{
-                                    note: noteData+" Id:"+user.id+" Name: "+user.name
+                            var noteUrl = "orders/"+value.id+"/notes";
+                            // Add Order Create note
+                            diniApi.post(noteUrl,{
+                                note: notes+" Id:"+user.id+" Name: "+user.name
+                            })
+                                .then((response1)=>{
+                                    //
                                 })
-                                    .then((response1)=>{
-                                              //
-                                    })
-                                    .catch((error)=>{
-                                        console.log(error);
-                                        Toast.fire({
-                                            icon: 'error',
-                                            title: 'Some error occured! Please try again'
-                                        });
+                                .catch((error)=>{
+                                    console.log(error);
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: 'Some error occured! Please try again'
                                     });
+                                });
 
-                          });
+                        });
 
 
 
                         Toast.fire({
-                                            icon: 'success',
-                                            title: 'Batch Orders update successfully'
-                                        });
+                            icon: 'success',
+                            title: 'Batch Orders update successfully'
+                        });
                         this.getWebOrders();
                         this.refreshPostOrderData();
                         this.$Progress.finish();
@@ -2271,7 +2318,7 @@
                     .catch((error)=>{
 
                         console.log("Batch Update processing status Error");
-                        console.kog(error);
+                        console.log(error);
                         Toast.fire({
                             icon: 'error',
                             title: 'Some error occured! Please try again'
@@ -2284,17 +2331,8 @@
 
 
 
-
-                }else{
-                    Toast.fire({
-                            icon: 'error',
-                            title: 'Please select minimum one row'
-                        });
-                }
-
-
-
             },
+
 
             genaratePDF(id){
                window.open(window.location.origin+"/invoice-genarte/"+id, '_blank');
