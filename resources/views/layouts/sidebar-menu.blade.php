@@ -1,24 +1,3 @@
-<?php
-
-use Automattic\WooCommerce\Client;
-
-$my_site_url = env('MIX_WC_URL');
-$my_site_ck = env('MIX_WC_CONSUMER_KEY');
-$my_site_cs = env('MIX_WC_CONSUMER_SECRET');
-$my_site_version = env('MIX_WC_VERSION');
-$woocommerce = new Client(
-    $my_site_url,
-    $my_site_ck,
-    $my_site_cs,
-    [
-        'wp_api' => true,
-        'version' => $my_site_version
-    ]
-);
-
-$reports =$woocommerce->get('reports/orders/totals');
-
-?>
 
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -57,7 +36,7 @@ $reports =$woocommerce->get('reports/orders/totals');
                    Processing Order
                 </p>
 
-                <span class="rounded bg-danger pl-1 pr-1">{{$reports[1]->total}}</span>
+                <span class="rounded bg-danger pl-1 pr-1" id="count-processing">0</span>
             </router-link>
         </li>
 
@@ -70,7 +49,7 @@ $reports =$woocommerce->get('reports/orders/totals');
                     On hold Order
                 </p>
 
-                <span class="rounded bg-danger pl-1 pr-1">{{$reports[2]->total}}</span>
+                <span class="rounded bg-danger pl-1 pr-1" id="count-on-hold">0</span>
             </router-link>
         </li>
 
@@ -81,7 +60,7 @@ $reports =$woocommerce->get('reports/orders/totals');
                     Confirmed Order
                 </p>
 
-                <span class="rounded bg-danger pl-1 pr-1">{{$reports[3]->total}}</span>
+                <span class="rounded bg-danger pl-1 pr-1" id="count-confirmed">0</span>
             </router-link>
         </li>
 
@@ -91,7 +70,7 @@ $reports =$woocommerce->get('reports/orders/totals');
                 <p>
                     In-Transit Order
                 </p>
-                <span class="rounded bg-danger pl-1 pr-1">{{$reports[4]->total}}</span>
+                <span class="rounded bg-danger pl-1 pr-1" id="count-in-transit">0</span>
             </router-link>
         </li>
 
@@ -101,7 +80,7 @@ $reports =$woocommerce->get('reports/orders/totals');
                 <p>
                     Delivered Order
                 </p>
-                <span class="rounded bg-danger pl-1 pr-1">{{$reports[5]->total}}</span>
+                <span class="rounded bg-danger pl-1 pr-1" id="count-delivered">0</span>
             </router-link>
         </li>
 
@@ -111,7 +90,7 @@ $reports =$woocommerce->get('reports/orders/totals');
                 <p>
                     Returned Order
                 </p>
-                <span class="rounded bg-danger pl-1 pr-1">{{$reports[6]->total}}</span>
+                <span class="rounded bg-danger pl-1 pr-1" id="count-returned">0</span>
             </router-link>
         </li>
 
@@ -121,7 +100,7 @@ $reports =$woocommerce->get('reports/orders/totals');
                 <p>
                     Completed Order
                 </p>
-                <span class="rounded bg-danger pl-1 pr-1">{{$reports[7]->total}}</span>
+                <span class="rounded bg-danger pl-1 pr-1" id="count-completed">0</span>
             </router-link>
         </li>
 
@@ -131,7 +110,7 @@ $reports =$woocommerce->get('reports/orders/totals');
                 <p>
                     Cancelled Order
                 </p>
-                <span class="rounded bg-danger pl-1 pr-1">{{$reports[8]->total}}</span>
+                <span class="rounded bg-danger pl-1 pr-1" id="count-cancelled">0</span>
             </router-link>
         </li>
 
@@ -141,7 +120,7 @@ $reports =$woocommerce->get('reports/orders/totals');
                 <p>
                     Refunded Order
                 </p>
-                <span class="rounded bg-danger pl-1 pr-1">{{$reports[9]->total}}</span>
+                <span class="rounded bg-danger pl-1 pr-1" id="count-refunded">0</span>
             </router-link>
         </li>
 
@@ -151,7 +130,7 @@ $reports =$woocommerce->get('reports/orders/totals');
                 <p>
                     Failed Order
                 </p>
-                <span class="rounded bg-danger pl-1 pr-1">{{$reports[10]->total}}</span>
+                <span class="rounded bg-danger pl-1 pr-1" id="count-failed">0</span>
             </router-link>
         </li>
 
@@ -164,7 +143,7 @@ $reports =$woocommerce->get('reports/orders/totals');
                     Pending Pay Order
                 </p>
 
-                <span class="rounded bg-danger pl-1 pr-1">{{$reports[0]->total}}</span>
+                <span class="rounded bg-danger pl-1 pr-1" id="count-pending">0</span>
             </router-link>
         </li>
 

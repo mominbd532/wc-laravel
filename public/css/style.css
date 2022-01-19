@@ -1,4 +1,12 @@
+.my-login-app {
+    background: rgb(252,70,107);
+    background: radial-gradient(circle, rgba(252,70,107,1) 0%, rgba(63,94,251,1) 100%);
+}
 
-canvas#projector {
-    position: absolute;
+.navbar-light .navbar-brand {
+    color: #fff;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #fff;
 }

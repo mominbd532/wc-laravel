@@ -136,7 +136,7 @@
                 <!-- /.col -->
 
 
-              
+
             </div>
             <!-- /.row -->
 
@@ -293,9 +293,19 @@
             getOrderTotals(){
                 diniApi.get("reports/orders/totals")
                     .then((response) => {
-                        console.log(response.data);
                         this.orders_total = response.data;
                         this.list_shown = true;
+                        document.getElementById('count-processing').innerHTML = this.orders_total[1].total;
+                        document.getElementById('count-on-hold').innerHTML = this.orders_total[2].total;
+                        document.getElementById('count-confirmed').innerHTML = this.orders_total[3].total;
+                        document.getElementById('count-in-transit').innerHTML = this.orders_total[4].total;
+                        document.getElementById('count-delivered').innerHTML = this.orders_total[5].total;
+                        document.getElementById('count-returned').innerHTML = this.orders_total[6].total;
+                        document.getElementById('count-completed').innerHTML = this.orders_total[7].total;
+                        document.getElementById('count-cancelled').innerHTML = this.orders_total[8].total;
+                        document.getElementById('count-refunded').innerHTML = this.orders_total[9].total;
+                        document.getElementById('count-failed').innerHTML = this.orders_total[10].total;
+                        document.getElementById('count-pending').innerHTML = this.orders_total[0].total;
                     })
                     .catch((error) => {
                       console.log(error);
@@ -303,11 +313,11 @@
             }
         },
         mounted() {
-            console.log('Component mounted.')
+            this.getOrderTotals();
         },
         created() {
             this.$Progress.start();
-            this.getOrderTotals();
+
             this.$Progress.finish();
         },
     }

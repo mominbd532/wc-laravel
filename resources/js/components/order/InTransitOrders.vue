@@ -771,6 +771,18 @@ export default {
 
                     this.records = newData;
 
+                    document.getElementById('count-processing').innerHTML = response.data[1].total;
+                    document.getElementById('count-on-hold').innerHTML = response.data[2].total;
+                    document.getElementById('count-confirmed').innerHTML = response.data[3].total;
+                    document.getElementById('count-in-transit').innerHTML = response.data[4].total;
+                    document.getElementById('count-delivered').innerHTML = response.data[5].total;
+                    document.getElementById('count-returned').innerHTML = response.data[6].total;
+                    document.getElementById('count-completed').innerHTML = response.data[7].total;
+                    document.getElementById('count-cancelled').innerHTML = response.data[8].total;
+                    document.getElementById('count-refunded').innerHTML = response.data[9].total;
+                    document.getElementById('count-failed').innerHTML = response.data[10].total;
+                    document.getElementById('count-pending').innerHTML = response.data[0].total;
+
                 })
                 .catch((error) => {
                     console.log(error);
@@ -1202,6 +1214,7 @@ export default {
             this.selectedRow= [];
             this.selectAll= false;
             this.selectedAction= '';
+            this.getOrderTotals();
         },
 
         updateBillingName(event, id){
@@ -2353,7 +2366,7 @@ export default {
 
     },
     mounted() {
-        //
+        this.getOrderTotals();
     },
     created() {
         this.$Progress.start();

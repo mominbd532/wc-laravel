@@ -20,10 +20,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
-<body>
+<body class="my-login-app">
     <div id="app">
-        <canvas id="projector" width="100" height="100%">Your browser does not support the Canvas element.</canvas>
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background:  #3f5efb;">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
